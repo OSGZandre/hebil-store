@@ -1,5 +1,3 @@
-# Sistema de Gestão para Loja / PDV
-
 ## Visão Geral
 
 O sistema será uma plataforma completa de gerenciamento para loja, focada em:
