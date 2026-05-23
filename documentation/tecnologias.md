@@ -67,7 +67,7 @@ Service (regras de negócio, transações)
         │
         ├── Repository (SQL explícito + parâmetros)
         ├── Services de outros módulos (Estoque, Auditoria, …)
-        └── Shared (TransactionManager, AbstractRepository)
+        └── Shared (ConnectionFactory, TransactionManager, UsuarioContext)
         │
         ▼
 Twig (HTML)  ou  JSON (AJAX do PDV)
@@ -178,23 +178,28 @@ O scaffold Symfony atual ainda lista Doctrine no `composer.json` — será **rem
 
 ### 4.5 Acesso ao banco (sem ORM)
 
-Wrapper sugerido em `Shared/Database/AbstractRepository`:
-
-| Método | Uso |
-|--------|-----|
-| `fetchAll($sql, $params)` | Listagens |
-| `fetchOne($sql, $params)` | Um registro ou `null` |
-| `execute($sql, $params)` | INSERT/UPDATE/DELETE |
-| `lastInsertId()` | Após insert |
-
-Implementação interna: `PDO::prepare()` + `execute()` + `fetchAll(PDO::FETCH_ASSOC)`.
-
-Exemplo de uso no módulo (ver código completo em [`arquitetura.md`](arquitetura.md#42-exemplo-de-repository)):
+PDO direto nos repositories — **sem** classe base abstrata:
 
 ```php
-$sql = 'SELECT id, nome, preco_venda FROM produto WHERE codigo_barras = :codigo LIMIT 1';
-return $this->fetchOne($sql, ['codigo' => $codigo]);
+public function buscarPorCodigo(string $codigo)
+{
+    $sql = 'SELECT idProduto, nome FROM produto WHERE codigo_barras = :codigo LIMIT 1';
+    $query = $this->conn->prepare($sql);
+    $query->execute(['codigo' => $codigo]);
+    $result = $query->fetch();
+
+    return $result;
+}
 ```
+
+| PDO | Uso |
+|-----|-----|
+| `$this->conn` | Conexão injetada (PDO) |
+| `prepare()` + `execute()` | SQL com parâmetros do usuário |
+| `query()` | SQL fixo sem parâmetros externos |
+| `fetch()` / `fetchAll()` | Retorno em array associativo |
+
+Repository **só** devolve dados. Controller interpreta (`false`, campos vazios, redirect, etc.).
 
 ---
 
@@ -391,7 +396,7 @@ Mapeamento dos requisitos para módulos em `src/Module/` (detalhes em [`arquitet
 | Camada transversal | Onde |
 |--------------------|------|
 | Transações | `Shared/Database/TransactionManager` |
-| SQL base | `Shared/Database/AbstractRepository` |
+| SQL base | PDO direto nos `*Repository` |
 | Templates | `templates/module/<nome>/` |
 | Front PDV | Bootstrap + Stimulus em `assets/` |
 

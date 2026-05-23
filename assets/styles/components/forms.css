@@ -1,0 +1,106 @@
+/**
+ * Forms — agrupamento em seções (cards) e grid de campos.
+ * Trabalha em cima das classes .form-label / .form-control do Bootstrap.
+ */
+
+.form-section {
+    background: var(--hebil-color-surface);
+    border: 1px solid var(--hebil-color-border);
+    border-radius: var(--hebil-radius);
+    box-shadow: var(--hebil-shadow-sm);
+    margin-bottom: var(--hebil-space-5);
+}
+
+.form-section__header {
+    padding: var(--hebil-space-4) var(--hebil-space-5);
+    border-bottom: 1px solid var(--hebil-color-border);
+}
+
+.form-section__title {
+    margin: 0;
+    font-size: var(--hebil-font-size-md);
+    font-weight: var(--hebil-font-weight-semibold);
+    color: var(--hebil-color-text);
+}
+
+.form-section__hint {
+    margin: var(--hebil-space-1) 0 0;
+    font-size: var(--hebil-font-size-sm);
+    color: var(--hebil-color-text-muted);
+}
+
+.form-section__body {
+    padding: var(--hebil-space-5);
+}
+
+/* Grid responsivo de campos (2 colunas em md+) */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--hebil-space-4);
+}
+
+.form-grid > .field          { grid-column: span 12; }
+.form-grid > .field--6       { grid-column: span 12; }
+.form-grid > .field--4       { grid-column: span 12; }
+.form-grid > .field--3       { grid-column: span 12; }
+
+@media (min-width: 768px) {
+    .form-grid > .field--6   { grid-column: span 6; }
+    .form-grid > .field--4   { grid-column: span 4; }
+    .form-grid > .field--3   { grid-column: span 3; }
+}
+
+.form-label {
+    font-weight: var(--hebil-font-weight-medium);
+    font-size: var(--hebil-font-size-sm);
+    color: var(--hebil-color-text);
+}
+
+.form-text {
+    font-size: var(--hebil-font-size-xs);
+    color: var(--hebil-color-text-muted);
+}
+
+.form-required {
+    color: var(--hebil-color-danger);
+    margin-left: 2px;
+}
+
+.form-control,
+.form-select {
+    border-color: var(--hebil-color-border-strong);
+    border-radius: var(--hebil-radius-sm);
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--hebil-color-primary);
+    box-shadow: 0 0 0 0.2rem var(--hebil-color-focus-ring);
+}
+
+/* Footer de ações do formulário (sticky bottom no scroll longo) */
+.form-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--hebil-space-3);
+    padding: var(--hebil-space-4) var(--hebil-space-5);
+    background: var(--hebil-color-surface);
+    border: 1px solid var(--hebil-color-border);
+    border-radius: var(--hebil-radius);
+    margin-top: var(--hebil-space-5);
+}
+
+.form-actions__primary {
+    display: flex;
+    gap: var(--hebil-space-2);
+}
+
+/* Modal de autorização admin — cabeçalho âmbar discreto */
+.modal-admin-autorizacao__header {
+    background: var(--hebil-color-warning-soft);
+    border-bottom-color: var(--hebil-color-warning);
+    align-items: flex-start;
+    gap: var(--hebil-space-3);
+}

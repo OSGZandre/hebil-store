@@ -1,0 +1,38 @@
+/**
+ * Produto - formulário (e formulários administrativos em geral).
+ * Max-width controlado para melhor leitura.
+ */
+
+.produto-form {
+    max-width: 960px;
+}
+
+.produto-form .field-currency .input-group-text {
+    background: var(--hebil-color-surface-alt);
+    color: var(--hebil-color-text-muted);
+    border-color: var(--hebil-color-border-strong);
+    font-weight: var(--hebil-font-weight-semibold);
+}
+
+/* Banner indicando que um campo só é visível para admin */
+.field-restricted {
+    position: relative;
+    padding: var(--hebil-space-3);
+    background: var(--hebil-color-warning-soft);
+    border: 1px dashed var(--hebil-color-warning);
+    border-radius: var(--hebil-radius-sm);
+}
+
+.field-restricted__tag {
+    position: absolute;
+    top: -10px;
+    left: var(--hebil-space-3);
+    background: var(--hebil-color-warning);
+    color: #fff;
+    font-size: var(--hebil-font-size-xs);
+    font-weight: var(--hebil-font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 2px var(--hebil-space-2);
+    border-radius: var(--hebil-radius-pill);
+}

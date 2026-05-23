@@ -1,0 +1,223 @@
+/**
+ * Cards reutilizáveis — KPI, módulo (home) e hero.
+ * Complementa o .card do Bootstrap quando precisamos de variações próprias.
+ */
+
+/* Card base do Bootstrap recebe ajustes leves (sombra + radius) */
+.card {
+    border-color: var(--hebil-color-border);
+    border-radius: var(--hebil-radius);
+    box-shadow: var(--hebil-shadow-sm);
+}
+
+.card-header {
+    background: var(--hebil-color-surface);
+    border-bottom: 1px solid var(--hebil-color-border);
+    font-weight: var(--hebil-font-weight-semibold);
+}
+
+/* KPI ------------------------------------------------------------------- */
+.hebil-kpi {
+    background: var(--hebil-color-surface);
+    border: 1px solid var(--hebil-color-border);
+    border-radius: var(--hebil-radius);
+    padding: var(--hebil-space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--hebil-space-2);
+    box-shadow: var(--hebil-shadow-sm);
+}
+
+.hebil-kpi__label {
+    margin: 0;
+    font-size: var(--hebil-font-size-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--hebil-color-text-muted);
+    font-weight: var(--hebil-font-weight-semibold);
+}
+
+.hebil-kpi__value {
+    margin: 0;
+    font-size: var(--hebil-font-size-2xl);
+    font-weight: var(--hebil-font-weight-bold);
+    color: var(--hebil-color-text);
+    font-variant-numeric: tabular-nums;
+}
+
+.hebil-kpi__delta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--hebil-space-1);
+    font-size: var(--hebil-font-size-sm);
+    font-weight: var(--hebil-font-weight-medium);
+}
+
+.hebil-kpi__delta--up    { color: var(--hebil-color-success); }
+.hebil-kpi__delta--down  { color: var(--hebil-color-danger); }
+.hebil-kpi__delta--flat  { color: var(--hebil-color-text-muted); }
+
+.hebil-kpi--accent {
+    border-left: 4px solid var(--hebil-color-primary);
+}
+
+/* Card de módulo (home) ------------------------------------------------- */
+.hebil-module-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hebil-space-3);
+    padding: var(--hebil-space-5);
+    height: 100%;
+    background: var(--hebil-color-surface);
+    border: 1px solid var(--hebil-color-border);
+    border-radius: var(--hebil-radius);
+    text-decoration: none;
+    color: var(--hebil-color-text);
+    transition: border-color 120ms ease, box-shadow 120ms ease, transform 120ms ease;
+}
+
+.hebil-module-card:hover,
+.hebil-module-card:focus-visible {
+    border-color: var(--hebil-color-primary);
+    box-shadow: var(--hebil-shadow-md);
+    color: var(--hebil-color-text);
+    text-decoration: none;
+    transform: translateY(-1px);
+}
+
+.hebil-module-card__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--hebil-radius-sm);
+    background: var(--hebil-color-primary-soft);
+    color: var(--hebil-color-primary-700);
+    font-weight: var(--hebil-font-weight-bold);
+}
+
+.hebil-module-card__title {
+    margin: 0;
+    font-size: var(--hebil-font-size-lg);
+    font-weight: var(--hebil-font-weight-semibold);
+}
+
+.hebil-module-card__desc {
+    margin: 0;
+    color: var(--hebil-color-text-muted);
+    font-size: var(--hebil-font-size-sm);
+}
+
+.hebil-module-card__badge {
+    align-self: flex-start;
+    font-size: var(--hebil-font-size-xs);
+    font-weight: var(--hebil-font-weight-semibold);
+    padding: 2px var(--hebil-space-2);
+    border-radius: var(--hebil-radius-pill);
+    background: var(--hebil-color-warning-soft);
+    color: var(--hebil-color-warning);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Hero CTA (home) ------------------------------------------------------- */
+.hebil-hero {
+    position: relative;
+    overflow: hidden;
+    color: #fff;
+    border-radius: var(--hebil-radius-lg);
+    padding: var(--hebil-space-7) var(--hebil-space-6);
+    background:
+        linear-gradient(135deg, var(--hebil-color-primary) 0%, var(--hebil-color-primary-700) 55%, var(--hebil-color-secondary) 100%);
+    box-shadow: var(--hebil-shadow-md);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--hebil-space-5);
+}
+
+.hebil-hero__eyebrow {
+    margin: 0 0 var(--hebil-space-2);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: var(--hebil-font-size-xs);
+    color: rgba(255, 255, 255, 0.75);
+    font-weight: var(--hebil-font-weight-semibold);
+}
+
+.hebil-hero__title {
+    margin: 0 0 var(--hebil-space-2);
+    font-size: clamp(1.75rem, 3vw, 2.25rem);
+    font-weight: var(--hebil-font-weight-bold);
+}
+
+.hebil-hero__desc {
+    margin: 0;
+    max-width: 60ch;
+    color: rgba(255, 255, 255, 0.85);
+    font-size: var(--hebil-font-size-md);
+}
+
+.hebil-hero__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--hebil-space-2);
+    background: #fff;
+    color: var(--hebil-color-primary-700);
+    border: none;
+    border-radius: var(--hebil-radius);
+    padding: var(--hebil-space-3) var(--hebil-space-5);
+    font-weight: var(--hebil-font-weight-bold);
+    font-size: var(--hebil-font-size-lg);
+    text-decoration: none;
+    box-shadow: var(--hebil-shadow-sm);
+}
+
+.hebil-hero__cta:hover,
+.hebil-hero__cta:focus-visible {
+    background: var(--hebil-color-primary-soft);
+    color: var(--hebil-color-primary-700);
+    text-decoration: none;
+}
+
+@media (max-width: 767.98px) {
+    .hebil-hero {
+        grid-template-columns: 1fr;
+        text-align: left;
+    }
+}
+
+/* Bootstrap button override leve para combinar com a marca */
+.btn-primary {
+    --bs-btn-bg: var(--hebil-color-primary);
+    --bs-btn-border-color: var(--hebil-color-primary);
+    --bs-btn-hover-bg: var(--hebil-color-primary-600);
+    --bs-btn-hover-border-color: var(--hebil-color-primary-600);
+    --bs-btn-active-bg: var(--hebil-color-primary-700);
+    --bs-btn-active-border-color: var(--hebil-color-primary-700);
+}
+
+.btn-success {
+    --bs-btn-bg: var(--hebil-color-secondary);
+    --bs-btn-border-color: var(--hebil-color-secondary);
+    --bs-btn-hover-bg: #0b5d57;
+    --bs-btn-hover-border-color: #0b5d57;
+}
+
+.btn-danger {
+    --bs-btn-bg: var(--hebil-color-danger);
+    --bs-btn-border-color: var(--hebil-color-danger);
+    --bs-btn-hover-bg: #991717;
+    --bs-btn-hover-border-color: #991717;
+}
+
+.btn-warning {
+    --bs-btn-bg: var(--hebil-color-warning);
+    --bs-btn-border-color: var(--hebil-color-warning);
+    --bs-btn-color: #fff;
+    --bs-btn-hover-bg: #92410a;
+    --bs-btn-hover-border-color: #92410a;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-active-color: #fff;
+}

@@ -1,0 +1,93 @@
+/**
+ * Dashboard financeiro (admin).
+ * Grid de KPIs + placeholders de gráficos para Chart.js.
+ */
+
+.dashboard-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--hebil-space-3);
+    padding: var(--hebil-space-3) var(--hebil-space-4);
+    background: var(--hebil-color-surface);
+    border: 1px solid var(--hebil-color-border);
+    border-radius: var(--hebil-radius);
+    margin-bottom: var(--hebil-space-5);
+}
+
+.dashboard-toolbar__label {
+    font-size: var(--hebil-font-size-sm);
+    color: var(--hebil-color-text-muted);
+    font-weight: var(--hebil-font-weight-semibold);
+    margin: 0;
+}
+
+.dashboard-kpis {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: var(--hebil-space-4);
+    margin-bottom: var(--hebil-space-5);
+}
+
+.dashboard-charts {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: var(--hebil-space-4);
+}
+
+@media (max-width: 991.98px) {
+    .dashboard-charts {
+        grid-template-columns: 1fr;
+    }
+}
+
+.dashboard-chart {
+    background: var(--hebil-color-surface);
+    border: 1px solid var(--hebil-color-border);
+    border-radius: var(--hebil-radius);
+    box-shadow: var(--hebil-shadow-sm);
+    display: flex;
+    flex-direction: column;
+}
+
+.dashboard-chart__header {
+    padding: var(--hebil-space-4) var(--hebil-space-5);
+    border-bottom: 1px solid var(--hebil-color-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.dashboard-chart__title {
+    margin: 0;
+    font-size: var(--hebil-font-size-md);
+    font-weight: var(--hebil-font-weight-semibold);
+}
+
+.dashboard-chart__hint {
+    margin: 0;
+    font-size: var(--hebil-font-size-xs);
+    color: var(--hebil-color-text-muted);
+}
+
+.dashboard-chart__body {
+    padding: var(--hebil-space-5);
+    min-height: 240px;
+}
+
+.dashboard-chart__placeholder {
+    height: 240px;
+    display: grid;
+    place-items: center;
+    color: var(--hebil-color-text-muted);
+    background: repeating-linear-gradient(
+        45deg,
+        var(--hebil-color-surface-alt),
+        var(--hebil-color-surface-alt) 12px,
+        var(--hebil-color-surface) 12px,
+        var(--hebil-color-surface) 24px
+    );
+    border-radius: var(--hebil-radius-sm);
+    border: 1px dashed var(--hebil-color-border-strong);
+    font-size: var(--hebil-font-size-sm);
+}

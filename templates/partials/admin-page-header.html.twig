@@ -1,0 +1,25 @@
+{#
+  Partial avulso para casos onde o cabeçalho admin é renderizado fora do bloco do layout.
+  Parâmetros opcionais:
+    - breadcrumb (string|null)
+    - title (string)
+    - subtitle (string|null)
+    - actions (string|null) - HTML renderizado dos botões de ação
+#}
+<header class="admin-page-header">
+    <div>
+        {% if breadcrumb is defined and breadcrumb %}
+            <p class="admin-page-header__breadcrumb">{{ breadcrumb|raw }}</p>
+        {% endif %}
+        <h1 class="admin-page-header__title">{{ title|default('Administração') }}</h1>
+        {% if subtitle is defined and subtitle %}
+            <p class="admin-page-header__subtitle">{{ subtitle }}</p>
+        {% endif %}
+    </div>
+
+    {% if actions is defined and actions %}
+        <div class="admin-page-header__actions">
+            {{ actions|raw }}
+        </div>
+    {% endif %}
+</header>

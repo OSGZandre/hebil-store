@@ -1,27 +1,38 @@
+/**
+ * Home / hub — hero do PDV em destaque + grid de cards de módulos.
+ */
+
+.home-page__header {
+    margin-bottom: var(--hebil-space-6);
+}
+
 .home-page__title {
-    margin: 0 0 0.25rem;
+    margin: 0 0 var(--hebil-space-1);
+    font-size: var(--hebil-font-size-xl);
+    font-weight: var(--hebil-font-weight-bold);
 }
 
 .home-page__subtitle {
-    margin: 0 0 1.5rem;
-    color: var(--hebil-color-text-muted);
-}
-
-.home-module-list {
-    list-style: none;
-    padding: 0;
     margin: 0;
-}
-
-.home-module-list li {
-    display: flex;
-    justify-content: space-between;
-    padding: 0.5rem 0;
-    border-bottom: 1px solid #dee2e6;
-}
-
-.home-module-list em {
     color: var(--hebil-color-text-muted);
-    font-style: normal;
-    font-size: 0.875rem;
+    font-size: var(--hebil-font-size-md);
+}
+
+.home-page__hero {
+    margin-bottom: var(--hebil-space-6);
+}
+
+.home-page__section-title {
+    margin: 0 0 var(--hebil-space-4);
+    font-size: var(--hebil-font-size-md);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--hebil-color-text-muted);
+    font-weight: var(--hebil-font-weight-semibold);
+}
+
+.home-modules {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: var(--hebil-space-4);
 }

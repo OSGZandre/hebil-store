@@ -1,5 +1,6 @@
 /**
  * Base / reset leve — Bootstrap cuidará da maior parte depois da importação.
+ * Reforça acessibilidade (foco visível) e tipografia base.
  */
 *,
 *::before,
@@ -7,9 +8,51 @@
     box-sizing: border-box;
 }
 
+html {
+    -webkit-text-size-adjust: 100%;
+}
+
 body {
     margin: 0;
     font-family: var(--hebil-font-family);
+    font-size: var(--hebil-font-size-md);
     color: var(--hebil-color-text);
     background-color: var(--hebil-color-body-bg);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+:focus-visible {
+    outline: 2px solid var(--hebil-color-focus);
+    outline-offset: 2px;
+    border-radius: var(--hebil-radius-sm);
+}
+
+.btn:focus-visible,
+.form-control:focus-visible,
+.form-select:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 0.2rem var(--hebil-color-focus-ring);
+}
+
+a {
+    color: var(--hebil-color-primary);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--hebil-color-primary-600);
+    text-decoration: underline;
+}
+
+::selection {
+    background-color: var(--hebil-color-primary-soft);
+    color: var(--hebil-color-primary-700);
+}
+
+.visually-hidden-focusable:focus,
+.visually-hidden-focusable:focus-within {
+    background: var(--hebil-color-surface);
+    color: var(--hebil-color-text);
+    padding: var(--hebil-space-2) var(--hebil-space-4);
 }

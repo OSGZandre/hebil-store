@@ -1,0 +1,55 @@
+/**
+ * Produto - listagem genérica admin.
+ * Toolbar de filtros + tabela admin + paginação.
+ */
+
+.listar-toolbar {
+    display: grid;
+    grid-template-columns: 1.5fr auto auto;
+    gap: var(--hebil-space-3);
+    align-items: end;
+    padding: var(--hebil-space-4);
+    background: var(--hebil-color-surface);
+    border: 1px solid var(--hebil-color-border);
+    border-radius: var(--hebil-radius);
+    box-shadow: var(--hebil-shadow-sm);
+    margin-bottom: var(--hebil-space-4);
+}
+
+@media (max-width: 767.98px) {
+    .listar-toolbar {
+        grid-template-columns: 1fr;
+    }
+}
+
+.listar-toolbar__field label {
+    display: block;
+    font-size: var(--hebil-font-size-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--hebil-color-text-muted);
+    font-weight: var(--hebil-font-weight-semibold);
+    margin-bottom: var(--hebil-space-1);
+}
+
+.listar-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: var(--hebil-space-4);
+    flex-wrap: wrap;
+    gap: var(--hebil-space-3);
+}
+
+.listar-footer__info {
+    color: var(--hebil-color-text-muted);
+    font-size: var(--hebil-font-size-sm);
+    margin: 0;
+}
+
+.pagination {
+    --bs-pagination-color: var(--hebil-color-primary);
+    --bs-pagination-active-bg: var(--hebil-color-primary);
+    --bs-pagination-active-border-color: var(--hebil-color-primary);
+    margin-bottom: 0;
+}

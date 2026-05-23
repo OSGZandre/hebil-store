@@ -1,27 +1,59 @@
+/**
+ * Alerts — usam tokens semânticos.
+ * Compatível com classes do Bootstrap; sobrescrevemos apenas cor/borda para
+ * combinar com a paleta corporativa.
+ */
 .alert {
-    padding: 0.75rem 1rem;
-    margin-bottom: var(--hebil-spacing);
+    padding: var(--hebil-space-3) var(--hebil-space-4);
+    margin-bottom: var(--hebil-space-4);
     border-radius: var(--hebil-radius);
     border: 1px solid transparent;
+    font-size: var(--hebil-font-size-sm);
 }
 
 .alert-success {
-    background: #d1e7dd;
-    border-color: #badbcc;
+    background: var(--hebil-color-success-soft);
+    border-color: var(--hebil-color-success);
+    color: #14532d;
 }
 
-.alert-error,
-.alert-danger {
-    background: #f8d7da;
-    border-color: #f5c2c7;
+.alert-danger,
+.alert-error {
+    background: var(--hebil-color-danger-soft);
+    border-color: var(--hebil-color-danger);
+    color: #7f1d1d;
 }
 
 .alert-warning {
-    background: #fff3cd;
-    border-color: #ffecb5;
+    background: var(--hebil-color-warning-soft);
+    border-color: var(--hebil-color-warning);
+    color: #78350f;
 }
 
-.alert-info {
-    background: #cff4fc;
-    border-color: #b6effb;
+.alert-info,
+.alert-notice {
+    background: var(--hebil-color-info-soft);
+    border-color: var(--hebil-color-info);
+    color: #0c4a6e;
+}
+
+/* Empty state (mensagens de "nenhum item", etc.) */
+.empty-state {
+    padding: var(--hebil-space-6) var(--hebil-space-5);
+    text-align: center;
+    color: var(--hebil-color-text-muted);
+    background: var(--hebil-color-surface-alt);
+    border: 1px dashed var(--hebil-color-border-strong);
+    border-radius: var(--hebil-radius);
+}
+
+.empty-state__title {
+    margin: 0 0 var(--hebil-space-2);
+    color: var(--hebil-color-text);
+    font-weight: var(--hebil-font-weight-semibold);
+}
+
+.empty-state__hint {
+    margin: 0;
+    font-size: var(--hebil-font-size-sm);
 }

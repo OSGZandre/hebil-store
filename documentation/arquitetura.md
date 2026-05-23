@@ -19,8 +19,9 @@ src/
 ├── Shared/
 │   ├── Database/
 │   │   ├── ConnectionFactory.php      # obtém PDO / conexão
-│   │   ├── TransactionManager.php     # begin / commit / rollback
-│   │   └── AbstractRepository.php     # fetchAll, fetchOne, execute (opcional)
+│   │   └── TransactionManager.php     # begin / commit / rollback
+│   ├── Context/
+│   │   └── UsuarioContext.php         # ids do usuário “logado” em dev (até Fase 10)
 │   ├── Exception/
 │   ├── Security/                      # voters genéricos, helpers
 │   └── Util/                          # formatadores, helpers puros
@@ -126,10 +127,8 @@ Module/Venda/
 
 ```
 HTTP Request
-    → Controller (valida request, chama service)
-        → Service (regras de negócio, transação)
-            → Repository (SQL + parâmetros)
-            → Outros modules' Services (Estoque, Caixa, Auditoria)
+    → Controller (regras de negócio, orquestra gravações, transação)
+        → Repository (somente SQL: SELECT / INSERT / UPDATE)
     → Twig ou JsonResponse
 ```
 
@@ -137,9 +136,11 @@ HTTP Request
 
 | Camada | Pode | Não pode |
 |--------|------|----------|
-| **Controller** | Request/response, flash messages, HTTP codes | SQL, regra de negócio pesada |
-| **Service** | Orquestrar repos, transações, chamar outros services | SQL direto (preferir repo) |
-| **Repository** | SQL, bind de parâmetros, mapear array → DTO | Regra de negócio (ex.: “pode cancelar?”) |
+| **Controller** | Request/response, regras de negócio, chamar repositories, transação | SQL inline (usar repository) |
+| **Repository** | SQL puro com PDO (`prepare`, `execute`, `fetch`, `fetchAll`) | Regra de negócio, validação de fluxo |
+| **Service** | Opcional no futuro para trechos muito grandes | Substituir controller como dono da regra |
+
+`UsuarioContext` (Shared) guarda só `idUsuario` e `idLoja` do mock em dev — não é “login”, é atalho até a Fase 10.
 
 ---
 
@@ -151,62 +152,49 @@ HTTP Request
 - **Usar:** SQL escrito à mão (ou views SQL) dentro de classes `*Repository`.
 - **Conexão:** PDO via wrapper em `Shared/Database` (Symfony pode expor `Doctrine\DBAL\Connection` **apenas como cliente PDO** — ver [`tecnologias.md`](tecnologias.md#52-acesso-ao-banco-sem-orm)).
 
-### 4.2 Exemplo de repository
+### 4.2 Padrão do repository (simples)
 
 ```php
-namespace App\Module\Produto\Repository;
-
-use App\Shared\Database\AbstractRepository;
-
-final class ProdutoRepository extends AbstractRepository
+public function buscarPorId(int $id)
 {
-  public function buscarPorCodigoBarras(string $codigo): ?array
-  {
-    $sql = '
-      SELECT id, nome, codigo_barras, preco_venda, estoque_atual, ativo
-      FROM produto
-      WHERE codigo_barras = :codigo AND ativo = 1
-      LIMIT 1
-    ';
+    $sql = 'SELECT idProduto, nome, preco_venda FROM produto WHERE idProduto = :id LIMIT 1';
+    $query = $this->conn->prepare($sql);
+    $query->execute(['id' => $id]);
+    $result = $query->fetch();
 
-    return $this->fetchOne($sql, ['codigo' => $codigo]);
-  }
-
-  public function listarAtivos(int $limite = 50): array
-  {
-    $sql = '
-      SELECT id, nome, codigo_barras, preco_venda, estoque_atual
-      FROM produto
-      WHERE ativo = 1
-      ORDER BY nome
-      LIMIT :limite
-    ';
-
-    return $this->fetchAll($sql, ['limite' => $limite]);
-  }
+    return $result;
 }
 ```
 
-### 4.3 Retorno dos repositories
+Listagem:
 
-| Opção | Quando usar |
-|-------|-------------|
-| `array` associativo | Consultas simples, telas Twig |
-| **DTO** readonly (`ProdutoDto`) | Contrato claro entre camadas, PDV, APIs internas |
-| `int` / `bool` / `?string` | `execute`, `insert` retornando id |
+```php
+public function listarPorLoja(int $idLoja)
+{
+    $sql = 'SELECT idProduto, nome FROM produto WHERE idLoja = :idLoja ORDER BY nome';
+    $query = $this->conn->prepare($sql);
+    $query->execute(['idLoja' => $idLoja]);
 
-Services convertem array → DTO quando necessário.
+    return $query->fetchAll();
+}
+```
+
+**Regras:**
+
+1. Repository monta o SQL, executa, devolve **`fetch()` ou `fetchAll()`** — array associativo (`PDO::FETCH_ASSOC` na conexão).
+2. **Sem** regra de negócio, **sem** `if` de validação, **sem** montar outro formato — só os dados crus.
+3. `false` quando não achou linha é retorno do PDO; quem trata é o **controller**.
+4. Valores vindos do usuário: `:parametro` + `prepare()` (nunca concatenar `$id` no SQL).
+
+Fluxo: **controller** chama repository → recebe array → controller decide o que fazer (redirect, flash, Twig, etc.).
 
 ### 4.4 Transações
 
 Operações compostas (finalizar venda) usam `TransactionManager`:
 
 ```php
-$this->transactionManager->transactional(function () use ($vendaId) {
-  $this->vendaRepository->marcarComoFinalizada($vendaId);
-  $this->estoqueService->baixarPorVenda($vendaId);
-  $this->caixaService->registrarEntradaVenda($vendaId);
-  $this->auditoriaService->registrar('venda.finalizada', $vendaId);
+$this->transactionManager->executarEmTransacao(function () use ($vendaId) {
+  // controller chama repositories de venda, estoque, caixa, auditoria
 });
 ```
 
@@ -223,8 +211,9 @@ Um único ponto de commit/rollback evita inconsistência entre estoque e caixa.
 
 | Item | Motivo |
 |------|--------|
-| `AbstractRepository` | `fetchAll`, `fetchOne`, `execute`, `lastInsertId` |
+| `ConnectionFactory` | Uma conexão PDO por request |
 | `TransactionManager` | Transações compartilhadas entre módulos |
+| `UsuarioContext` | `idUsuario` / `idLoja` mock em dev |
 | Exceções base | `DomainException`, `NotFoundException` |
 | Interfaces | `ClockInterface` para testes |
 | **Não** colocar regra de negócio de Venda/Caixa em Shared | Shared é técnico, não domínio |
@@ -246,7 +235,7 @@ Um único ponto de commit/rollback evita inconsistência entre estoque e caixa.
 Exemplos:
 
 - `App\Module\Venda\Controller\PdvController`
-- `App\Shared\Database\AbstractRepository`
+- `App\Shared\Database\ConnectionFactory`
 
 ### 6.2 Rotas
 

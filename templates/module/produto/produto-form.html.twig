@@ -1,0 +1,163 @@
+{% extends 'layouts/admin.html.twig' %}
+
+{% block title %}Novo produto — Hebil Store{% endblock %}
+
+{% block admin_breadcrumb %}
+    <p class="admin-page-header__breadcrumb">Cadastros · <a href="{{ path('produto_index') }}">Produtos</a> · Novo</p>
+{% endblock %}
+
+{% block admin_title %}Novo produto{% endblock %}
+
+{% block admin_subtitle %}
+    <p class="admin-page-header__subtitle">Preencha os dados do produto. Campos marcados com * são obrigatórios.</p>
+{% endblock %}
+
+{% block admin_actions %}
+    <a href="{{ path('produto_index') }}" class="btn btn-outline-secondary">Voltar</a>
+{% endblock %}
+
+{% block admin_body %}
+    <form class="produto-form" novalidate>
+
+        <section class="form-section" aria-labelledby="secaoGeral">
+            <header class="form-section__header">
+                <h2 id="secaoGeral" class="form-section__title">Dados gerais</h2>
+                <p class="form-section__hint">Identificação do produto no sistema e no PDV.</p>
+            </header>
+
+            <div class="form-section__body">
+                <div class="form-grid">
+                    <div class="field field--6">
+                        <label for="produtoNome" class="form-label">
+                            Nome <span class="form-required" aria-hidden="true">*</span>
+                        </label>
+                        <input type="text" id="produtoNome" name="nome" class="form-control" required placeholder="ex.: Camiseta básica branca P">
+                    </div>
+
+                    <div class="field field--3">
+                        <label for="produtoSku" class="form-label">SKU</label>
+                        <input type="text" id="produtoSku" name="sku" class="form-control" placeholder="Interno">
+                    </div>
+
+                    <div class="field field--3">
+                        <label for="produtoBarcode" class="form-label">Código de barras</label>
+                        <input type="text" id="produtoBarcode" name="codigo_barras" class="form-control" inputmode="numeric" placeholder="EAN-13">
+                    </div>
+
+                    <div class="field field--6">
+                        <label for="produtoCategoria" class="form-label">
+                            Categoria <span class="form-required" aria-hidden="true">*</span>
+                        </label>
+                        <select id="produtoCategoria" name="categoria" class="form-select" required>
+                            <option value="">Selecione…</option>
+                            <option>Vestuário</option>
+                            <option>Acessórios</option>
+                            <option>Calçados</option>
+                        </select>
+                    </div>
+
+                    <div class="field field--6">
+                        <label for="produtoUnidade" class="form-label">Unidade</label>
+                        <select id="produtoUnidade" name="unidade" class="form-select">
+                            <option value="UN">Unidade (UN)</option>
+                            <option value="PC">Peça (PC)</option>
+                            <option value="KG">Quilo (KG)</option>
+                        </select>
+                    </div>
+
+                    <div class="field">
+                        <label for="produtoDescricao" class="form-label">Descrição</label>
+                        <textarea id="produtoDescricao" name="descricao" class="form-control" rows="3" placeholder="Detalhes opcionais para conferência."></textarea>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="form-section" aria-labelledby="secaoPrecos">
+            <header class="form-section__header">
+                <h2 id="secaoPrecos" class="form-section__title">Preços</h2>
+                <p class="form-section__hint">Preço de custo é visível apenas para administradores.</p>
+            </header>
+
+            <div class="form-section__body">
+                <div class="form-grid">
+                    <div class="field field--4">
+                        <label for="produtoPrecoVenda" class="form-label">
+                            Preço de venda <span class="form-required" aria-hidden="true">*</span>
+                        </label>
+                        <div class="input-group field-currency">
+                            <span class="input-group-text">R$</span>
+                            <input type="text" id="produtoPrecoVenda" name="preco_venda" class="form-control" required inputmode="decimal" placeholder="0,00">
+                        </div>
+                    </div>
+
+                    <div class="field field--4">
+                        <div class="field-restricted">
+                            <span class="field-restricted__tag">admin</span>
+                            <label for="produtoPrecoCusto" class="form-label">Preço de custo</label>
+                            <div class="input-group field-currency">
+                                <span class="input-group-text">R$</span>
+                                <input type="text" id="produtoPrecoCusto" name="preco_custo" class="form-control" inputmode="decimal" placeholder="0,00">
+                            </div>
+                            <p class="form-text mb-0">Usado para cálculo de margem e lucro.</p>
+                        </div>
+                    </div>
+
+                    <div class="field field--4">
+                        <label for="produtoMargem" class="form-label">Margem (%)</label>
+                        <input type="text" id="produtoMargem" name="margem" class="form-control" inputmode="decimal" placeholder="0,00" readonly>
+                        <p class="form-text">Calculada automaticamente.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="form-section" aria-labelledby="secaoEstoque">
+            <header class="form-section__header">
+                <h2 id="secaoEstoque" class="form-section__title">Estoque</h2>
+                <p class="form-section__hint">Alerta exibe aviso quando o saldo atingir o mínimo.</p>
+            </header>
+
+            <div class="form-section__body">
+                <div class="form-grid">
+                    <div class="field field--4">
+                        <label for="produtoEstoqueAtual" class="form-label">Estoque inicial</label>
+                        <input type="number" id="produtoEstoqueAtual" name="estoque_atual" class="form-control" min="0" placeholder="0">
+                    </div>
+
+                    <div class="field field--4">
+                        <label for="produtoEstoqueMinimo" class="form-label">Estoque mínimo</label>
+                        <input type="number" id="produtoEstoqueMinimo" name="estoque_minimo" class="form-control" min="0" placeholder="0">
+                    </div>
+
+                    <div class="field field--4">
+                        <label for="produtoLocalizacao" class="form-label">Localização</label>
+                        <input type="text" id="produtoLocalizacao" name="localizacao" class="form-control" placeholder="ex.: Prateleira A3">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="form-section" aria-labelledby="secaoStatus">
+            <header class="form-section__header">
+                <h2 id="secaoStatus" class="form-section__title">Status</h2>
+                <p class="form-section__hint">Produtos inativos não aparecem no PDV.</p>
+            </header>
+
+            <div class="form-section__body">
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" role="switch" id="produtoStatus" name="status" checked>
+                    <label class="form-check-label" for="produtoStatus">Produto ativo</label>
+                </div>
+            </div>
+        </section>
+
+        <footer class="form-actions">
+            <a href="{{ path('produto_index') }}" class="btn btn-link text-body-secondary text-decoration-none">Voltar sem salvar</a>
+            <div class="form-actions__primary">
+                <button type="reset" class="btn btn-outline-secondary">Limpar</button>
+                <button type="submit" class="btn btn-primary">Salvar produto</button>
+            </div>
+        </footer>
+    </form>
+{% endblock %}

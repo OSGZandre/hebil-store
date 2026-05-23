@@ -4,19 +4,70 @@
 
 {% block body %}
     <div class="home-page">
-        <h1 class="home-page__title">Hebil Store</h1>
-        <p class="home-page__subtitle">Sistema de gestão para loja — estrutura inicial</p>
+        <header class="home-page__header">
+            <h1 class="home-page__title">Olá, {{ navbar_usuario|default('Funcionário Mock') }}</h1>
+            <p class="home-page__subtitle">Selecione um módulo para começar a operar.</p>
+        </header>
 
-        <section class="home-page__modules">
-            <h2>Módulos</h2>
-            <ul class="home-module-list">
-                <li><span>Produto</span> <em>em breve</em></li>
-                <li><span>Estoque</span> <em>em breve</em></li>
-                <li><span>Caixa</span> <em>em breve</em></li>
-                <li><span>PDV / Venda</span> <em>em breve</em></li>
-                <li><span>Relatórios</span> <em>em breve</em></li>
-                <li><span>Dashboard</span> <em>em breve</em></li>
-            </ul>
+        <section class="home-page__hero" aria-label="Atalho principal">
+            <div class="hebil-hero">
+                <div>
+                    <p class="hebil-hero__eyebrow">Operação do dia</p>
+                    <h2 class="hebil-hero__title">Abrir tela de venda (PDV)</h2>
+                    <p class="hebil-hero__desc">
+                        Registre vendas com leitor de código de barras, busca rápida e atalhos de teclado.
+                        O caixa precisa estar aberto antes de iniciar uma venda.
+                    </p>
+                </div>
+                <a href="{{ path('venda_index') }}" class="hebil-hero__cta" aria-label="Abrir PDV">
+                    Abrir PDV
+                </a>
+            </div>
+        </section>
+
+        <section aria-label="Módulos">
+            <h3 class="home-page__section-title">Demais módulos</h3>
+
+            <div class="home-modules">
+                <a href="{{ path('produto_index') }}" class="hebil-module-card">
+                    <span class="hebil-module-card__icon" aria-hidden="true">P</span>
+                    <h4 class="hebil-module-card__title">Produtos</h4>
+                    <p class="hebil-module-card__desc">Cadastro, preço, código de barras e inativação.</p>
+                </a>
+
+                <a href="#" class="hebil-module-card" aria-disabled="true">
+                    <span class="hebil-module-card__icon" aria-hidden="true">E</span>
+                    <h4 class="hebil-module-card__title">Estoque</h4>
+                    <p class="hebil-module-card__desc">Saldo, entradas, perdas e alertas de mínimo.</p>
+                </a>
+
+                <a href="{{ path('caixa_index') }}" class="hebil-module-card">
+                    <span class="hebil-module-card__icon" aria-hidden="true">C</span>
+                    <h4 class="hebil-module-card__title">Caixa</h4>
+                    <p class="hebil-module-card__desc">Abertura, fechamento, sangria e suprimento.</p>
+                </a>
+
+                <a href="#" class="hebil-module-card" aria-disabled="true">
+                    <span class="hebil-module-card__icon" aria-hidden="true">R</span>
+                    <h4 class="hebil-module-card__title">Relatórios</h4>
+                    <p class="hebil-module-card__desc">Vendas, caixa, estoque e produtos com filtros.</p>
+                    <span class="hebil-module-card__badge">admin</span>
+                </a>
+
+                <a href="{{ path('dashboard_index') }}" class="hebil-module-card">
+                    <span class="hebil-module-card__icon" aria-hidden="true">D</span>
+                    <h4 class="hebil-module-card__title">Dashboard</h4>
+                    <p class="hebil-module-card__desc">KPIs financeiros, ticket médio e produtos.</p>
+                    <span class="hebil-module-card__badge">admin</span>
+                </a>
+
+                <a href="#" class="hebil-module-card" aria-disabled="true">
+                    <span class="hebil-module-card__icon" aria-hidden="true">U</span>
+                    <h4 class="hebil-module-card__title">Usuários</h4>
+                    <p class="hebil-module-card__desc">Cadastro de operadores, perfis e redefinição de senha.</p>
+                    <span class="hebil-module-card__badge">admin</span>
+                </a>
+            </div>
         </section>
     </div>
 {% endblock %}

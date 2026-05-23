@@ -1,0 +1,75 @@
+{% set current = app.request.attributes.get('_route') %}
+
+<aside class="admin-sidebar" aria-label="Navegação administrativa">
+    <a href="{{ path('home') }}" class="admin-sidebar__brand">
+        <span class="admin-sidebar__logo" aria-hidden="true">H</span>
+        <span>Hebil Store</span>
+    </a>
+
+    <nav class="admin-sidebar__nav">
+        <div>
+            <h2 class="admin-sidebar__section-title">Operação</h2>
+            <ul class="admin-sidebar__list">
+                <li>
+                    <a href="{{ path('venda_index') }}"
+                       class="admin-sidebar__link{% if current starts with 'venda_' %} is-active{% endif %}"
+                       {% if current starts with 'venda_' %}aria-current="page"{% endif %}>
+                        PDV / Venda
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ path('caixa_index') }}"
+                       class="admin-sidebar__link{% if current starts with 'caixa_' %} is-active{% endif %}"
+                       {% if current starts with 'caixa_' %}aria-current="page"{% endif %}>
+                        Caixa
+                    </a>
+                </li>
+                <li><a href="#" class="admin-sidebar__link" aria-disabled="true">Estoque</a></li>
+            </ul>
+        </div>
+
+        <div>
+            <h2 class="admin-sidebar__section-title">Cadastros</h2>
+            <ul class="admin-sidebar__list">
+                <li>
+                    <a href="{{ path('produto_index') }}"
+                       class="admin-sidebar__link{% if current starts with 'produto_' %} is-active{% endif %}"
+                       {% if current starts with 'produto_' %}aria-current="page"{% endif %}>
+                        Produtos
+                    </a>
+                </li>
+                <li><a href="#" class="admin-sidebar__link" aria-disabled="true">Categorias</a></li>
+                <li><a href="#" class="admin-sidebar__link" aria-disabled="true">Usuários <span class="admin-sidebar__badge">admin</span></a></li>
+            </ul>
+        </div>
+
+        <div>
+            <h2 class="admin-sidebar__section-title">Relatórios</h2>
+            <ul class="admin-sidebar__list">
+                <li><a href="#" class="admin-sidebar__link" aria-disabled="true">Vendas <span class="admin-sidebar__badge">admin</span></a></li>
+                <li><a href="#" class="admin-sidebar__link" aria-disabled="true">Caixa</a></li>
+                <li><a href="#" class="admin-sidebar__link" aria-disabled="true">Estoque</a></li>
+            </ul>
+        </div>
+
+        <div>
+            <h2 class="admin-sidebar__section-title">Sistema</h2>
+            <ul class="admin-sidebar__list">
+                <li>
+                    <a href="{{ path('dashboard_index') }}"
+                       class="admin-sidebar__link{% if current starts with 'dashboard_' %} is-active{% endif %}"
+                       {% if current starts with 'dashboard_' %}aria-current="page"{% endif %}>
+                        Dashboard <span class="admin-sidebar__badge">admin</span>
+                    </a>
+                </li>
+                <li><a href="#" class="admin-sidebar__link" aria-disabled="true">Auditoria <span class="admin-sidebar__badge">admin</span></a></li>
+                <li><a href="#" class="admin-sidebar__link" aria-disabled="true">Configurações</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="admin-sidebar__footer">
+        <strong>{{ navbar_usuario|default('Funcionário Mock') }}</strong>
+        {{ navbar_perfil|default('Funcionário') }} · {{ navbar_loja|default('Loja Matriz') }}
+    </div>
+</aside>

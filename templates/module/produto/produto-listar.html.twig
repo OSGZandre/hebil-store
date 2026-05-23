@@ -1,0 +1,129 @@
+{% extends 'layouts/admin.html.twig' %}
+
+{% block title %}Produtos — Hebil Store{% endblock %}
+
+{% block admin_breadcrumb %}
+    <p class="admin-page-header__breadcrumb">Cadastros · Produtos</p>
+{% endblock %}
+
+{% block admin_title %}Produtos{% endblock %}
+
+{% block admin_subtitle %}
+    <p class="admin-page-header__subtitle">Cadastro, preço, código de barras e status. Produtos não são excluídos, apenas inativados.</p>
+{% endblock %}
+
+{% block admin_actions %}
+    <a href="#" class="btn btn-outline-secondary">Exportar CSV</a>
+    <a href="{{ path('produto_novo') }}" class="btn btn-primary">+ Novo produto</a>
+{% endblock %}
+
+{% block admin_body %}
+    <form class="listar-toolbar" role="search" aria-label="Filtros de produto">
+        <div class="listar-toolbar__field">
+            <label for="produtoBusca">Buscar</label>
+            <input
+                type="search"
+                id="produtoBusca"
+                name="q"
+                class="form-control"
+                placeholder="Nome, SKU ou código de barras…"
+            >
+        </div>
+
+        <div class="listar-toolbar__field">
+            <label for="produtoStatus">Status</label>
+            <select id="produtoStatus" name="status" class="form-select">
+                <option value="">Todos</option>
+                <option value="ativo" selected>Ativos</option>
+                <option value="inativo">Inativos</option>
+            </select>
+        </div>
+
+        <div class="listar-toolbar__field">
+            <label>&nbsp;</label>
+            <button type="submit" class="btn btn-primary w-100">Filtrar</button>
+        </div>
+    </form>
+
+    <div class="table-wrapper table-wrapper--scroll">
+        <table class="table table-admin" aria-label="Lista de produtos">
+            <thead>
+                <tr>
+                    <th scope="col">Produto</th>
+                    <th scope="col">Categoria</th>
+                    <th scope="col" class="text-end">Preço venda</th>
+                    <th scope="col" class="text-end">Estoque</th>
+                    <th scope="col" class="col-status">Status</th>
+                    <th scope="col" class="col-acoes"><span class="visually-hidden">Ações</span></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <strong>Camiseta básica branca P</strong><br>
+                        <span class="text-body-secondary small">SKU 7891234567890</span>
+                    </td>
+                    <td>Vestuário</td>
+                    <td class="text-end" style="font-variant-numeric: tabular-nums;">R$ 49,90</td>
+                    <td class="text-end" style="font-variant-numeric: tabular-nums;">128</td>
+                    <td><span class="status-badge status-badge--ativo">Ativo</span></td>
+                    <td class="col-acoes">
+                        <a href="#" class="btn btn-sm btn-outline-secondary">Editar</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>Calça jeans skinny 40</strong><br>
+                        <span class="text-body-secondary small">SKU 7891234567321</span>
+                    </td>
+                    <td>Vestuário</td>
+                    <td class="text-end" style="font-variant-numeric: tabular-nums;">R$ 179,00</td>
+                    <td class="text-end" style="font-variant-numeric: tabular-nums;">42</td>
+                    <td><span class="status-badge status-badge--ativo">Ativo</span></td>
+                    <td class="col-acoes">
+                        <a href="#" class="btn btn-sm btn-outline-secondary">Editar</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>Meia esportiva par</strong><br>
+                        <span class="text-body-secondary small">SKU 7891234560000</span>
+                    </td>
+                    <td>Acessórios</td>
+                    <td class="text-end" style="font-variant-numeric: tabular-nums;">R$ 14,90</td>
+                    <td class="text-end" style="font-variant-numeric: tabular-nums;">7</td>
+                    <td><span class="status-badge status-badge--alerta">Estoque baixo</span></td>
+                    <td class="col-acoes">
+                        <a href="#" class="btn btn-sm btn-outline-secondary">Editar</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong>Boné aba reta preto</strong><br>
+                        <span class="text-body-secondary small">SKU 7891234561234</span>
+                    </td>
+                    <td>Acessórios</td>
+                    <td class="text-end" style="font-variant-numeric: tabular-nums;">R$ 89,00</td>
+                    <td class="text-end" style="font-variant-numeric: tabular-nums;">0</td>
+                    <td><span class="status-badge status-badge--inativo">Inativo</span></td>
+                    <td class="col-acoes">
+                        <a href="#" class="btn btn-sm btn-outline-secondary">Editar</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="listar-footer">
+        <p class="listar-footer__info">Exibindo 1–4 de 128 produtos</p>
+        <nav aria-label="Paginação de produtos">
+            <ul class="pagination pagination-sm">
+                <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1">Anterior</a></li>
+                <li class="page-item active" aria-current="page"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item"><a class="page-link" href="#">Próxima</a></li>
+            </ul>
+        </nav>
+    </div>
+{% endblock %}

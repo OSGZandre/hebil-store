@@ -1,7 +1,17 @@
+{# Mapeia labels customizados para classes do Bootstrap (error/notice → danger/info) #}
+{% set flash_label_map = {
+    'error':  'danger',
+    'notice': 'info',
+    'fail':   'danger',
+    'ok':     'success'
+} %}
+
 {% for label, messages in app.flashes %}
+    {% set bs = flash_label_map[label] ?? label %}
     {% for message in messages %}
-        <div class="alert alert-{{ label }}" role="alert">
+        <div class="alert alert-{{ bs }} alert-dismissible fade show" role="alert">
             {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
         </div>
     {% endfor %}
 {% endfor %}

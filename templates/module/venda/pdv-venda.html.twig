@@ -1,0 +1,210 @@
+{% extends 'layouts/pdv.html.twig' %}
+
+{% block title %}PDV — Venda em andamento — Hebil Store{% endblock %}
+
+{% block pdv_body %}
+    <div class="pdv-venda" data-controller="pdv" data-action="keydown@window->pdv#handleShortcut">
+
+        {# ─────────────── Coluna principal: busca + itens ─────────────── #}
+        <section class="pdv-venda__main" aria-label="Itens da venda">
+
+            <div class="pdv-search">
+                <div class="pdv-search__field pdv-search__field--barcode">
+                    <label for="pdvBarcode">Código de barras</label>
+                    <input
+                        type="text"
+                        id="pdvBarcode"
+                        class="form-control form-control-lg"
+                        placeholder="Escaneie ou digite o código…"
+                        autocomplete="off"
+                        inputmode="numeric"
+                        data-pdv-target="barcode"
+                        data-action="keydown.enter->pdv#submitBarcode"
+                        autofocus
+                    >
+                </div>
+
+                <div class="pdv-search__field">
+                    <label for="pdvBusca">Buscar produto (F2)</label>
+                    <input
+                        type="search"
+                        id="pdvBusca"
+                        class="form-control form-control-lg"
+                        placeholder="Nome, SKU, descrição…"
+                        autocomplete="off"
+                        data-pdv-target="search"
+                    >
+                </div>
+
+                <div class="pdv-search__add">
+                    <button
+                        type="button"
+                        class="btn btn-primary btn-lg"
+                        data-pdv-target="addButton"
+                        data-action="pdv#submitBarcode"
+                    >
+                        Adicionar
+                    </button>
+                </div>
+            </div>
+
+            <div class="pdv-items">
+                <div class="pdv-items__header">
+                    <h2 class="pdv-items__title">Itens da venda</h2>
+                    <span class="pdv-items__count">3 itens · 5 unidades</span>
+                </div>
+
+                <div class="table-wrapper table-wrapper--scroll">
+                    <table class="table table-pdv" aria-label="Itens da venda">
+                        <thead>
+                            <tr>
+                                <th class="col-num" scope="col">#</th>
+                                <th scope="col">Produto</th>
+                                <th class="col-qtd" scope="col">Qtd</th>
+                                <th class="col-preco" scope="col">Preço un.</th>
+                                <th class="col-subtotal" scope="col">Subtotal</th>
+                                <th class="col-acoes" scope="col"><span class="visually-hidden">Ações</span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="col-num">1</td>
+                                <td>
+                                    <strong>Camiseta básica branca P</strong><br>
+                                    <span class="text-body-secondary small">SKU 7891234567890</span>
+                                </td>
+                                <td class="col-qtd">2</td>
+                                <td class="col-preco">R$ 49,90</td>
+                                <td class="col-subtotal">R$ 99,80</td>
+                                <td class="col-acoes">
+                                    <button
+                                        type="button"
+                                        class="btn-icon"
+                                        aria-label="Remover Camiseta básica branca P (exige autorização)"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#modalAdminAutorizacao"
+                                    >×</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-num">2</td>
+                                <td>
+                                    <strong>Calça jeans skinny 40</strong><br>
+                                    <span class="text-body-secondary small">SKU 7891234567321</span>
+                                </td>
+                                <td class="col-qtd">1</td>
+                                <td class="col-preco">R$ 179,00</td>
+                                <td class="col-subtotal">R$ 179,00</td>
+                                <td class="col-acoes">
+                                    <button
+                                        type="button"
+                                        class="btn-icon"
+                                        aria-label="Remover Calça jeans skinny 40 (exige autorização)"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#modalAdminAutorizacao"
+                                    >×</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-num">3</td>
+                                <td>
+                                    <strong>Meia esportiva par</strong><br>
+                                    <span class="text-body-secondary small">SKU 7891234560000</span>
+                                </td>
+                                <td class="col-qtd">2</td>
+                                <td class="col-preco">R$ 14,90</td>
+                                <td class="col-subtotal">R$ 29,80</td>
+                                <td class="col-acoes">
+                                    <button
+                                        type="button"
+                                        class="btn-icon"
+                                        aria-label="Remover Meia esportiva par (exige autorização)"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#modalAdminAutorizacao"
+                                    >×</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                {# Estado vazio (alternativa quando não houver itens) #}
+                {# <div class="pdv-items__empty">
+                    <p class="pdv-items__empty-title">Nenhum item na venda</p>
+                    <p class="mb-0">Bipe um código de barras ou busque um produto para começar.</p>
+                </div> #}
+            </div>
+        </section>
+
+        {# ─────────────── Coluna direita: resumo + pagamento ─────────────── #}
+        <aside class="pdv-side" aria-label="Resumo e pagamento">
+
+            <section class="pdv-summary" aria-label="Resumo da venda">
+                <div class="pdv-summary__row">
+                    <span>Subtotal</span>
+                    <strong>R$ 308,60</strong>
+                </div>
+                <div class="pdv-summary__row pdv-summary__row--desconto">
+                    <span>Desconto</span>
+                    <strong>− R$ 0,00</strong>
+                </div>
+                <div class="pdv-summary__divider"></div>
+                <div class="pdv-summary__total" aria-live="polite">
+                    <p class="pdv-summary__total-label">Total</p>
+                    <p class="pdv-summary__total-value">R$ 308,60</p>
+                </div>
+            </section>
+
+            <section class="pdv-payment" aria-label="Forma de pagamento">
+                <h2 class="pdv-payment__title">Forma de pagamento</h2>
+                <div class="pdv-payment__methods" role="radiogroup" aria-label="Selecione a forma">
+                    <button type="button" class="pdv-payment__method is-active" role="radio" aria-checked="true" data-pdv-target="paymentMethod" data-action="pdv#selectPayment" data-method="dinheiro">Dinheiro</button>
+                    <button type="button" class="pdv-payment__method" role="radio" aria-checked="false" data-pdv-target="paymentMethod" data-action="pdv#selectPayment" data-method="pix">PIX</button>
+                    <button type="button" class="pdv-payment__method" role="radio" aria-checked="false" data-pdv-target="paymentMethod" data-action="pdv#selectPayment" data-method="cartao">Cartão</button>
+                </div>
+
+                <div class="mb-3">
+                    <label for="pdvValorRecebido" class="form-label">Valor recebido</label>
+                    <input
+                        type="text"
+                        id="pdvValorRecebido"
+                        class="form-control form-control-lg"
+                        placeholder="R$ 0,00"
+                        inputmode="decimal"
+                        data-pdv-target="received"
+                    >
+                </div>
+
+                <div class="d-flex justify-content-between text-body-secondary small">
+                    <span>Troco</span>
+                    <strong class="text-body" style="font-variant-numeric: tabular-nums;">R$ 0,00</strong>
+                </div>
+            </section>
+
+            <div class="pdv-actions">
+                <button
+                    type="button"
+                    class="btn btn-outline-danger"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalAdminAutorizacao"
+                >
+                    Cancelar venda
+                </button>
+                <button type="button" class="btn btn-outline-secondary">
+                    Desconto
+                </button>
+                <button
+                    type="button"
+                    class="btn btn-success pdv-actions__finalize"
+                    data-pdv-target="finalize"
+                    data-action="pdv#finalize"
+                >
+                    Finalizar venda (F8)
+                </button>
+            </div>
+        </aside>
+    </div>
+
+    {# Modal reutilizável para autorização administrativa #}
+    {% include 'partials/modal-admin-autorizacao.html.twig' %}
+{% endblock %}

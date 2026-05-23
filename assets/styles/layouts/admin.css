@@ -1,15 +1,203 @@
+/**
+ * Layout admin — sidebar escura fixa (ERP) + área de conteúdo com page-header.
+ * O <body class="layout-admin"> esconde a navbar pública e ocupa 100vh.
+ */
+.layout-admin {
+    background: var(--hebil-color-body-bg);
+}
+
+.layout-admin .app-main {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+}
+
 .layout-admin .admin-shell {
     display: grid;
-    grid-template-columns: 220px 1fr;
-    min-height: calc(100vh - 56px);
+    grid-template-columns: var(--hebil-sidebar-width) 1fr;
+    min-height: 100vh;
 }
 
+/* Sidebar ---------------------------------------------------------------- */
 .layout-admin .admin-sidebar {
-    background: var(--hebil-color-surface);
-    border-right: 1px solid #dee2e6;
-    padding: var(--hebil-spacing);
+    background: var(--hebil-sidebar-bg);
+    color: var(--hebil-sidebar-text);
+    border-right: 1px solid var(--hebil-sidebar-border);
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
 }
 
+.admin-sidebar__brand {
+    display: flex;
+    align-items: center;
+    gap: var(--hebil-space-3);
+    padding: var(--hebil-space-5) var(--hebil-space-5) var(--hebil-space-4);
+    color: #fff;
+    font-weight: var(--hebil-font-weight-bold);
+    font-size: var(--hebil-font-size-lg);
+    border-bottom: 1px solid var(--hebil-sidebar-border);
+}
+
+.admin-sidebar__brand .admin-sidebar__logo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--hebil-radius-sm);
+    background: var(--hebil-color-primary);
+    color: #fff;
+    font-weight: var(--hebil-font-weight-strong);
+}
+
+.admin-sidebar__nav {
+    flex: 1;
+    padding: var(--hebil-space-4) var(--hebil-space-3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--hebil-space-5);
+}
+
+.admin-sidebar__section-title {
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: var(--hebil-font-size-xs);
+    color: var(--hebil-sidebar-text-muted);
+    padding: 0 var(--hebil-space-3);
+    margin: 0 0 var(--hebil-space-2);
+    font-weight: var(--hebil-font-weight-semibold);
+}
+
+.admin-sidebar__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.admin-sidebar__link {
+    display: flex;
+    align-items: center;
+    gap: var(--hebil-space-3);
+    padding: var(--hebil-space-2) var(--hebil-space-3);
+    border-radius: var(--hebil-radius-sm);
+    color: var(--hebil-sidebar-text);
+    font-size: var(--hebil-font-size-sm);
+    font-weight: var(--hebil-font-weight-medium);
+    text-decoration: none;
+    border-left: 3px solid transparent;
+}
+
+.admin-sidebar__link:hover {
+    background: var(--hebil-sidebar-bg-alt);
+    color: var(--hebil-sidebar-text-active);
+    text-decoration: none;
+}
+
+.admin-sidebar__link.is-active,
+.admin-sidebar__link[aria-current="page"] {
+    background: var(--hebil-sidebar-active-bg);
+    color: var(--hebil-sidebar-text-active);
+    border-left-color: var(--hebil-sidebar-active-border);
+}
+
+.admin-sidebar__badge {
+    margin-left: auto;
+    font-size: 0.625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 2px var(--hebil-space-2);
+    border-radius: var(--hebil-radius-pill);
+    background: var(--hebil-color-warning);
+    color: #fff;
+    font-weight: var(--hebil-font-weight-semibold);
+}
+
+.admin-sidebar__footer {
+    padding: var(--hebil-space-4) var(--hebil-space-5);
+    border-top: 1px solid var(--hebil-sidebar-border);
+    font-size: var(--hebil-font-size-sm);
+    color: var(--hebil-sidebar-text-muted);
+}
+
+.admin-sidebar__footer strong {
+    display: block;
+    color: #fff;
+    font-weight: var(--hebil-font-weight-semibold);
+    margin-bottom: 2px;
+}
+
+/* Conteúdo --------------------------------------------------------------- */
 .layout-admin .admin-content {
-    padding: var(--hebil-spacing);
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.admin-page-header {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--hebil-space-4);
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--hebil-space-5) var(--hebil-space-6);
+    background: var(--hebil-color-surface);
+    border-bottom: 1px solid var(--hebil-color-border);
+}
+
+.admin-page-header__title {
+    margin: 0;
+    font-size: var(--hebil-font-size-xl);
+    font-weight: var(--hebil-font-weight-semibold);
+    color: var(--hebil-color-text);
+}
+
+.admin-page-header__subtitle {
+    margin: var(--hebil-space-1) 0 0;
+    color: var(--hebil-color-text-muted);
+    font-size: var(--hebil-font-size-sm);
+}
+
+.admin-page-header__breadcrumb {
+    font-size: var(--hebil-font-size-xs);
+    color: var(--hebil-color-text-muted);
+    margin: 0 0 var(--hebil-space-2);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.admin-page-header__actions {
+    display: flex;
+    gap: var(--hebil-space-2);
+    flex-wrap: wrap;
+}
+
+.layout-admin .admin-page {
+    padding: var(--hebil-space-6);
+    flex: 1;
+}
+
+/* Responsivo: em telas < 992px a sidebar vira topo (colapsa em coluna) */
+@media (max-width: 991.98px) {
+    .layout-admin .admin-shell {
+        grid-template-columns: 1fr;
+    }
+
+    .layout-admin .admin-sidebar {
+        position: relative;
+        height: auto;
+        max-height: none;
+    }
+
+    .layout-admin .admin-sidebar__nav {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: var(--hebil-space-3);
+    }
 }

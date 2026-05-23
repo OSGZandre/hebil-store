@@ -2,18 +2,29 @@
 
 {% block body_class %}layout-admin{% endblock %}
 
+{# Layout admin não usa a navbar pública; a sidebar substitui #}
+{% block navbar %}{% endblock %}
+
 {% block body %}
     <div class="admin-shell">
-        <aside class="admin-sidebar">
-            {% block admin_sidebar %}
-                <nav class="admin-nav">
-                    <span class="admin-nav__title">Administração</span>
-                    {# Links dos módulos serão adicionados nas fases seguintes #}
-                </nav>
-            {% endblock %}
-        </aside>
+        {% block admin_sidebar %}
+            {% include 'partials/admin-sidebar.html.twig' %}
+        {% endblock %}
+
         <div class="admin-content">
-            {% block admin_header %}{% endblock %}
+            {% block admin_header %}
+                <header class="admin-page-header">
+                    <div>
+                        {% block admin_breadcrumb %}{% endblock %}
+                        <h1 class="admin-page-header__title">{% block admin_title %}Administração{% endblock %}</h1>
+                        {% block admin_subtitle %}{% endblock %}
+                    </div>
+                    <div class="admin-page-header__actions">
+                        {% block admin_actions %}{% endblock %}
+                    </div>
+                </header>
+            {% endblock %}
+
             <div class="admin-page">
                 {% block admin_body %}{% endblock %}
             </div>

@@ -1,0 +1,76 @@
+{#
+  Modal de autorização administrativa.
+  Funcionário precisa de login + senha admin + motivo para:
+    - remover item da venda
+    - cancelar venda
+    - aplicar desconto crítico
+    - ajustar/perder estoque
+  A ação é gravada em audit_log (Fase 5).
+#}
+<div class="modal fade" id="modalAdminAutorizacao" tabindex="-1" aria-labelledby="modalAdminAutorizacaoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header modal-admin-autorizacao__header">
+                <div>
+                    <h2 class="modal-title h5 mb-1" id="modalAdminAutorizacaoLabel">Autorização administrativa</h2>
+                    <p class="mb-0 small text-body-secondary">Operação restrita · será registrada em log de auditoria.</p>
+                </div>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+
+            <form>
+                <div class="modal-body">
+                    <div class="alert alert-warning d-flex gap-2 align-items-start mb-4" role="alert">
+                        <strong class="text-uppercase small">Ação:</strong>
+                        <span id="modalAdminAutorizacaoAcao">Cancelar venda #001</span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="adminLogin" class="form-label">Login do administrador</label>
+                        <input
+                            type="text"
+                            id="adminLogin"
+                            name="admin_login"
+                            class="form-control"
+                            autocomplete="username"
+                            required
+                            placeholder="ex.: admin.maria"
+                        >
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="adminSenha" class="form-label">Senha</label>
+                        <input
+                            type="password"
+                            id="adminSenha"
+                            name="admin_senha"
+                            class="form-control"
+                            autocomplete="current-password"
+                            required
+                        >
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="adminMotivo" class="form-label">
+                            Motivo <span class="text-danger" aria-hidden="true">*</span>
+                        </label>
+                        <textarea
+                            id="adminMotivo"
+                            name="admin_motivo"
+                            class="form-control"
+                            rows="3"
+                            required
+                            placeholder="Descreva o motivo da autorização (cliente desistiu, erro de digitação etc.)"
+                        ></textarea>
+                        <div class="form-text">Obrigatório. Esse texto fica salvo no histórico da operação.</div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-warning fw-semibold">Autorizar operação</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

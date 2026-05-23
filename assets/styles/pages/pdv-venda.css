@@ -1,0 +1,248 @@
+/**
+ * PDV - tela de venda.
+ * Grid: 2fr esquerda (busca + itens) / 1fr direita (resumo + pagamento).
+ * Total da venda é o elemento mais forte da tela.
+ */
+
+.pdv-venda {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(320px, 1fr);
+    gap: var(--hebil-space-5);
+    align-items: start;
+}
+
+@media (max-width: 991.98px) {
+    .pdv-venda {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Coluna esquerda ---------------------------------------------- */
+.pdv-venda__main {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hebil-space-4);
+    min-width: 0;
+}
+
+.pdv-search {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: var(--hebil-space-3);
+    align-items: end;
+    padding: var(--hebil-space-4);
+    background: var(--hebil-color-surface);
+    border: 1px solid var(--hebil-color-border);
+    border-radius: var(--hebil-radius);
+    box-shadow: var(--hebil-shadow-sm);
+}
+
+@media (max-width: 575.98px) {
+    .pdv-search {
+        grid-template-columns: 1fr;
+    }
+}
+
+.pdv-search__field {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.pdv-search__field label {
+    font-size: var(--hebil-font-size-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--hebil-color-text-muted);
+    font-weight: var(--hebil-font-weight-semibold);
+    margin-bottom: var(--hebil-space-1);
+}
+
+/* Todos os controles da barra com a mesma altura (lg) — mouse/scanner consistente */
+.pdv-search .form-control {
+    height: 48px;
+}
+
+.pdv-search__field--barcode .form-control {
+    font-family: var(--hebil-font-family-mono);
+    font-size: var(--hebil-font-size-lg);
+    font-weight: var(--hebil-font-weight-semibold);
+    border-color: var(--hebil-color-primary);
+    background: var(--hebil-color-primary-soft);
+    color: var(--hebil-color-primary-700);
+    letter-spacing: 0.05em;
+}
+
+.pdv-search__add .btn {
+    height: 48px;
+    padding-inline: var(--hebil-space-5);
+    white-space: nowrap;
+}
+
+.pdv-items {
+    background: var(--hebil-color-surface);
+    border: 1px solid var(--hebil-color-border);
+    border-radius: var(--hebil-radius);
+    box-shadow: var(--hebil-shadow-sm);
+    overflow: hidden;
+}
+
+.pdv-items__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: var(--hebil-space-3) var(--hebil-space-4);
+    border-bottom: 1px solid var(--hebil-color-border);
+}
+
+.pdv-items__title {
+    margin: 0;
+    font-size: var(--hebil-font-size-md);
+    font-weight: var(--hebil-font-weight-semibold);
+}
+
+.pdv-items__count {
+    font-size: var(--hebil-font-size-sm);
+    color: var(--hebil-color-text-muted);
+    font-variant-numeric: tabular-nums;
+}
+
+/* Coluna direita ---------------------------------------------- */
+.pdv-side {
+    position: sticky;
+    top: calc(var(--hebil-pdv-header-height) + var(--hebil-space-5));
+    display: flex;
+    flex-direction: column;
+    gap: var(--hebil-space-4);
+}
+
+.pdv-summary {
+    background: var(--hebil-color-surface);
+    border: 1px solid var(--hebil-color-border);
+    border-radius: var(--hebil-radius);
+    box-shadow: var(--hebil-shadow-sm);
+    padding: var(--hebil-space-5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--hebil-space-3);
+}
+
+.pdv-summary__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    color: var(--hebil-color-text-muted);
+    font-size: var(--hebil-font-size-sm);
+}
+
+.pdv-summary__row strong {
+    color: var(--hebil-color-text);
+    font-weight: var(--hebil-font-weight-semibold);
+    font-variant-numeric: tabular-nums;
+}
+
+.pdv-summary__row--desconto strong {
+    color: var(--hebil-color-warning);
+}
+
+.pdv-summary__divider {
+    height: 1px;
+    background: var(--hebil-color-border);
+    margin: var(--hebil-space-1) 0;
+}
+
+.pdv-summary__total {
+    display: flex;
+    flex-direction: column;
+    gap: var(--hebil-space-1);
+    padding: var(--hebil-space-4);
+    margin: var(--hebil-space-2) calc(-1 * var(--hebil-space-2)) 0;
+    background: var(--hebil-color-secondary-soft);
+    border: 1px solid rgba(15, 118, 110, 0.25);
+    border-radius: var(--hebil-radius);
+}
+
+.pdv-summary__total-label {
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: var(--hebil-font-size-xs);
+    color: var(--hebil-color-secondary);
+    font-weight: var(--hebil-font-weight-bold);
+}
+
+.pdv-summary__total-value {
+    margin: 0;
+    font-size: var(--hebil-font-size-display);
+    font-weight: var(--hebil-font-weight-strong);
+    color: var(--hebil-color-secondary);
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+}
+
+.pdv-payment {
+    background: var(--hebil-color-surface);
+    border: 1px solid var(--hebil-color-border);
+    border-radius: var(--hebil-radius);
+    box-shadow: var(--hebil-shadow-sm);
+    padding: var(--hebil-space-5);
+}
+
+.pdv-payment__title {
+    margin: 0 0 var(--hebil-space-3);
+    font-size: var(--hebil-font-size-md);
+    font-weight: var(--hebil-font-weight-semibold);
+}
+
+.pdv-payment__methods {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--hebil-space-2);
+    margin-bottom: var(--hebil-space-3);
+}
+
+.pdv-payment__method {
+    appearance: none;
+    background: var(--hebil-color-surface);
+    border: 1px solid var(--hebil-color-border-strong);
+    border-radius: var(--hebil-radius-sm);
+    padding: var(--hebil-space-3) var(--hebil-space-2);
+    text-align: center;
+    font-size: var(--hebil-font-size-sm);
+    font-weight: var(--hebil-font-weight-semibold);
+    color: var(--hebil-color-text);
+    cursor: pointer;
+}
+
+.pdv-payment__method.is-active,
+.pdv-payment__method:hover {
+    background: var(--hebil-color-primary-soft);
+    border-color: var(--hebil-color-primary);
+    color: var(--hebil-color-primary-700);
+}
+
+.pdv-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--hebil-space-3);
+}
+
+.pdv-actions__finalize {
+    grid-column: 1 / -1;
+    font-size: var(--hebil-font-size-lg);
+    font-weight: var(--hebil-font-weight-bold);
+    padding-block: var(--hebil-space-4);
+}
+
+/* Empty state ------------------------------------------------- */
+.pdv-items__empty {
+    padding: var(--hebil-space-7) var(--hebil-space-5);
+    text-align: center;
+    color: var(--hebil-color-text-muted);
+}
+
+.pdv-items__empty-title {
+    margin: 0 0 var(--hebil-space-2);
+    color: var(--hebil-color-text);
+    font-weight: var(--hebil-font-weight-semibold);
+}

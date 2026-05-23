@@ -1,0 +1,139 @@
+/**
+ * Tables — duas variações: table-pdv (densa, alta legibilidade no PDV)
+ * e table-admin (zebrada, com hover, para listagens administrativas).
+ */
+
+/* Variação genérica: cabeçalho mais escuro + tipografia consistente */
+.table {
+    --bs-table-color: var(--hebil-color-text);
+    --bs-table-bg: var(--hebil-color-surface);
+    --bs-table-border-color: var(--hebil-color-border);
+    color: var(--hebil-color-text);
+    font-size: var(--hebil-font-size-sm);
+    margin-bottom: 0;
+}
+
+.table thead th {
+    background: var(--hebil-color-surface-alt);
+    color: var(--hebil-color-text-muted);
+    font-size: var(--hebil-font-size-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: var(--hebil-font-weight-semibold);
+    border-bottom: 1px solid var(--hebil-color-border);
+    padding: var(--hebil-space-3) var(--hebil-space-4);
+    white-space: nowrap;
+}
+
+.table tbody td {
+    padding: var(--hebil-space-3) var(--hebil-space-4);
+    vertical-align: middle;
+    border-bottom: 1px solid var(--hebil-color-border);
+}
+
+/* PDV — densa, fonte tabular, alta densidade visual */
+.table-pdv {
+    --bs-table-color: var(--hebil-color-text);
+}
+
+.table-pdv thead th {
+    background: #f1f5f9;
+    color: var(--hebil-color-text-muted);
+}
+
+.table-pdv tbody td {
+    padding: var(--hebil-space-2) var(--hebil-space-3);
+    font-size: var(--hebil-font-size-sm);
+}
+
+.table-pdv tbody tr + tr td {
+    border-top: 1px solid var(--hebil-color-border);
+}
+
+.table-pdv .col-num {
+    width: 48px;
+    color: var(--hebil-color-text-muted);
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+}
+
+.table-pdv .col-qtd,
+.table-pdv .col-preco,
+.table-pdv .col-subtotal {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.table-pdv .col-subtotal {
+    font-weight: var(--hebil-font-weight-semibold);
+}
+
+.table-pdv .col-acoes {
+    width: 44px;
+    text-align: right;
+}
+
+.table-pdv .btn-icon {
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: var(--hebil-radius-sm);
+    color: var(--hebil-color-text-muted);
+    padding: var(--hebil-space-1) var(--hebil-space-2);
+    line-height: 1;
+}
+
+.table-pdv .btn-icon:hover {
+    background: var(--hebil-color-danger-soft);
+    color: var(--hebil-color-danger);
+    border-color: var(--hebil-color-danger);
+}
+
+/* Admin — zebrada e com hover */
+.table-admin tbody tr:nth-child(even) td {
+    background: var(--hebil-color-surface-alt);
+}
+
+.table-admin tbody tr:hover td {
+    background: var(--hebil-color-primary-soft);
+}
+
+.table-admin .col-status {
+    width: 110px;
+}
+
+.table-admin .col-acoes {
+    width: 140px;
+    text-align: right;
+    white-space: nowrap;
+}
+
+/* Badges de status reutilizáveis */
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--hebil-space-1);
+    padding: 2px var(--hebil-space-2);
+    border-radius: var(--hebil-radius-pill);
+    font-size: var(--hebil-font-size-xs);
+    font-weight: var(--hebil-font-weight-semibold);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.status-badge--ativo    { background: var(--hebil-color-success-soft); color: var(--hebil-color-success); }
+.status-badge--inativo  { background: var(--hebil-color-surface-alt); color: var(--hebil-color-text-muted); border: 1px solid var(--hebil-color-border); }
+.status-badge--alerta   { background: var(--hebil-color-warning-soft); color: var(--hebil-color-warning); }
+.status-badge--critico  { background: var(--hebil-color-danger-soft); color: var(--hebil-color-danger); }
+
+/* Wrapper com scroll horizontal em telas pequenas */
+.table-wrapper {
+    background: var(--hebil-color-surface);
+    border: 1px solid var(--hebil-color-border);
+    border-radius: var(--hebil-radius);
+    overflow: hidden;
+}
+
+.table-wrapper--scroll {
+    overflow-x: auto;
+}

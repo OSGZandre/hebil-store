@@ -1,0 +1,87 @@
+{% extends 'layouts/admin.html.twig' %}
+
+{% block title %}Dashboard financeiro — Hebil Store{% endblock %}
+
+{% block admin_breadcrumb %}
+    <p class="admin-page-header__breadcrumb">Sistema · Dashboard</p>
+{% endblock %}
+
+{% block admin_title %}Dashboard financeiro{% endblock %}
+
+{% block admin_subtitle %}
+    <p class="admin-page-header__subtitle">Visão executiva do desempenho do dia e do mês. Acesso restrito a administradores.</p>
+{% endblock %}
+
+{% block admin_actions %}
+    <a href="#" class="btn btn-outline-secondary">Exportar PDF</a>
+{% endblock %}
+
+{% block admin_body %}
+    <form class="dashboard-toolbar" aria-label="Filtros do dashboard">
+        <p class="dashboard-toolbar__label">Período:</p>
+        <select class="form-select form-select-sm" style="max-width: 200px;">
+            <option>Hoje</option>
+            <option selected>Últimos 7 dias</option>
+            <option>Mês atual</option>
+            <option>Mês anterior</option>
+            <option>Personalizado…</option>
+        </select>
+        <select class="form-select form-select-sm" style="max-width: 200px;">
+            <option>Todos os operadores</option>
+            <option>Maria (Funcionário)</option>
+            <option>João (Funcionário)</option>
+        </select>
+    </form>
+
+    <section class="dashboard-kpis" aria-label="Indicadores principais">
+        <article class="hebil-kpi hebil-kpi--accent">
+            <p class="hebil-kpi__label">Faturamento (hoje)</p>
+            <p class="hebil-kpi__value">R$ 4.812,30</p>
+            <span class="hebil-kpi__delta hebil-kpi__delta--up">▲ 12,4% vs. ontem</span>
+        </article>
+
+        <article class="hebil-kpi">
+            <p class="hebil-kpi__label">Faturamento (mês)</p>
+            <p class="hebil-kpi__value">R$ 86.430,00</p>
+            <span class="hebil-kpi__delta hebil-kpi__delta--up">▲ 4,1% vs. mês anterior</span>
+        </article>
+
+        <article class="hebil-kpi">
+            <p class="hebil-kpi__label">Ticket médio</p>
+            <p class="hebil-kpi__value">R$ 142,80</p>
+            <span class="hebil-kpi__delta hebil-kpi__delta--flat">— estável</span>
+        </article>
+
+        <article class="hebil-kpi">
+            <p class="hebil-kpi__label">Vendas (hoje)</p>
+            <p class="hebil-kpi__value">34</p>
+            <span class="hebil-kpi__delta hebil-kpi__delta--down">▼ 3 vs. ontem</span>
+        </article>
+    </section>
+
+    <section class="dashboard-charts" aria-label="Gráficos">
+        <article class="dashboard-chart">
+            <header class="dashboard-chart__header">
+                <h2 class="dashboard-chart__title">Faturamento diário</h2>
+                <p class="dashboard-chart__hint">Últimos 7 dias</p>
+            </header>
+            <div class="dashboard-chart__body">
+                <div class="dashboard-chart__placeholder" role="img" aria-label="Placeholder do gráfico de faturamento">
+                    Gráfico de barras — Chart.js (Fase 9)
+                </div>
+            </div>
+        </article>
+
+        <article class="dashboard-chart">
+            <header class="dashboard-chart__header">
+                <h2 class="dashboard-chart__title">Vendas por forma de pagamento</h2>
+                <p class="dashboard-chart__hint">Mês atual</p>
+            </header>
+            <div class="dashboard-chart__body">
+                <div class="dashboard-chart__placeholder" role="img" aria-label="Placeholder do gráfico de pagamento">
+                    Gráfico donut — Chart.js (Fase 9)
+                </div>
+            </div>
+        </article>
+    </section>
+{% endblock %}

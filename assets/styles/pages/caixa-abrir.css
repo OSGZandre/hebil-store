@@ -1,0 +1,57 @@
+/**
+ * Caixa - abertura de sessão. Form centralizado, focado em uma decisão.
+ */
+
+.caixa-abrir {
+    display: grid;
+    place-items: start center;
+    padding: var(--hebil-space-4) 0;
+}
+
+.caixa-abrir__card {
+    width: 100%;
+    max-width: 520px;
+    background: var(--hebil-color-surface);
+    border: 1px solid var(--hebil-color-border);
+    border-radius: var(--hebil-radius);
+    box-shadow: var(--hebil-shadow-md);
+    overflow: hidden;
+}
+
+.caixa-abrir__header {
+    padding: var(--hebil-space-5);
+    border-bottom: 1px solid var(--hebil-color-border);
+    background: var(--hebil-color-primary-soft);
+}
+
+.caixa-abrir__title {
+    margin: 0;
+    font-size: var(--hebil-font-size-lg);
+    font-weight: var(--hebil-font-weight-bold);
+    color: var(--hebil-color-primary-700);
+}
+
+.caixa-abrir__subtitle {
+    margin: var(--hebil-space-1) 0 0;
+    color: var(--hebil-color-text-muted);
+    font-size: var(--hebil-font-size-sm);
+}
+
+.caixa-abrir__body {
+    padding: var(--hebil-space-5);
+}
+
+.caixa-abrir__currency .form-control {
+    font-size: var(--hebil-font-size-xl);
+    font-weight: var(--hebil-font-weight-bold);
+    font-variant-numeric: tabular-nums;
+}
+
+.caixa-abrir__footer {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--hebil-space-3);
+    padding: var(--hebil-space-4) var(--hebil-space-5);
+    border-top: 1px solid var(--hebil-color-border);
+    background: var(--hebil-color-surface-alt);
+}

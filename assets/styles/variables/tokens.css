@@ -1,15 +1,102 @@
 /**
- * Design tokens — cores, espaçamentos, tipografia.
- * Ajustar quando você enviar o guia visual do front-end.
+ * Design tokens — Hebil Store
+ * Paleta corporativa azul. Pensada para auditoria/ERP: baixa fadiga,
+ * contraste WCAG AA, sem dark mode global, sem gradientes pesados.
  */
 :root {
-    --hebil-color-primary: #0d6efd;
+    /* Marca */
+    --hebil-color-primary: #1e40af;
+    --hebil-color-primary-600: #1d4ed8;
+    --hebil-color-primary-700: #1e3a8a;
+    --hebil-color-primary-soft: #eff3fb;
+
+    /* Apoio semântico */
+    --hebil-color-secondary: #0f766e;
+    --hebil-color-secondary-soft: #e6f4f2;
+    --hebil-color-success: #15803d;
+    --hebil-color-success-soft: #e7f5ec;
+    --hebil-color-danger: #b91c1c;
+    --hebil-color-danger-soft: #fdecec;
+    --hebil-color-warning: #b45309;
+    --hebil-color-warning-soft: #fdf3e3;
+    --hebil-color-info: #0369a1;
+    --hebil-color-info-soft: #e6f1f8;
+
+    /* Superfícies */
     --hebil-color-body-bg: #f4f6f9;
     --hebil-color-surface: #ffffff;
-    --hebil-color-text: #1a1d21;
-    --hebil-color-text-muted: #6c757d;
+    --hebil-color-surface-alt: #f9fafb;
+    --hebil-color-border: #e5e7eb;
+    --hebil-color-border-strong: #d1d5db;
 
-    --hebil-font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-    --hebil-radius: 0.375rem;
-    --hebil-spacing: 1rem;
+    /* Texto */
+    --hebil-color-text: #111827;
+    --hebil-color-text-muted: #6b7280;
+    --hebil-color-text-soft: #9ca3af;
+    --hebil-color-text-inverse: #f8fafc;
+
+    /* Sidebar admin (escura, ERP) */
+    --hebil-sidebar-bg: #0f172a;
+    --hebil-sidebar-bg-alt: #111c34;
+    --hebil-sidebar-border: #1e293b;
+    --hebil-sidebar-text: #cbd5e1;
+    --hebil-sidebar-text-muted: #64748b;
+    --hebil-sidebar-text-active: #ffffff;
+    --hebil-sidebar-active-bg: rgba(59, 130, 246, 0.18);
+    --hebil-sidebar-active-border: #3b82f6;
+
+    /* Header PDV */
+    --hebil-pdv-header-bg: #0f172a;
+    --hebil-pdv-header-text: #e2e8f0;
+
+    /* Foco e seleção (acessibilidade) */
+    --hebil-color-focus: #1d4ed8;
+    --hebil-color-focus-ring: rgba(29, 78, 216, 0.35);
+
+    /* Tipografia */
+    --hebil-font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    --hebil-font-family-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+    --hebil-font-size-xs: 0.75rem;
+    --hebil-font-size-sm: 0.875rem;
+    --hebil-font-size-md: 1rem;
+    --hebil-font-size-lg: 1.125rem;
+    --hebil-font-size-xl: 1.5rem;
+    --hebil-font-size-2xl: 2rem;
+    --hebil-font-size-display: clamp(2.5rem, 5vw, 3.75rem);
+    --hebil-font-weight-regular: 400;
+    --hebil-font-weight-medium: 500;
+    --hebil-font-weight-semibold: 600;
+    --hebil-font-weight-bold: 700;
+    --hebil-font-weight-strong: 800;
+
+    /* Espaçamento (base 0.25rem) */
+    --hebil-space-1: 0.25rem;
+    --hebil-space-2: 0.5rem;
+    --hebil-space-3: 0.75rem;
+    --hebil-space-4: 1rem;
+    --hebil-space-5: 1.5rem;
+    --hebil-space-6: 2rem;
+    --hebil-space-7: 2.5rem;
+    --hebil-space-8: 3rem;
+    --hebil-spacing: var(--hebil-space-4);
+
+    /* Cantos e sombras */
+    --hebil-radius-sm: 0.25rem;
+    --hebil-radius: 0.5rem;
+    --hebil-radius-lg: 0.75rem;
+    --hebil-radius-pill: 999px;
+    --hebil-shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
+    --hebil-shadow-md: 0 4px 12px rgba(15, 23, 42, 0.08);
+    --hebil-shadow-lg: 0 12px 24px rgba(15, 23, 42, 0.12);
+
+    /* Layout */
+    --hebil-sidebar-width: 240px;
+    --hebil-navbar-height: 56px;
+    --hebil-pdv-header-height: 56px;
+    --hebil-container-max: 1280px;
+
+    /* z-index */
+    --hebil-z-sticky: 1020;
+    --hebil-z-fixed: 1030;
+    --hebil-z-modal: 1050;
 }

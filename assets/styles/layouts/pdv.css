@@ -1,10 +1,143 @@
+/**
+ * Layout PDV — tela cheia, foco em venda. Sem navbar pública.
+ * Header escuro com info de operador/caixa + atalhos visíveis.
+ */
+.layout-pdv {
+    background: var(--hebil-color-body-bg);
+}
+
+.layout-pdv .app-main {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+}
+
 .layout-pdv .pdv-shell {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
 }
 
+/* Header PDV ------------------------------------------------------------- */
+.pdv-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--hebil-space-5);
+    min-height: var(--hebil-pdv-header-height);
+    padding: 0 var(--hebil-space-5);
+    background: var(--hebil-pdv-header-bg);
+    color: var(--hebil-pdv-header-text);
+    border-bottom: 1px solid var(--hebil-sidebar-border);
+}
+
+.pdv-header__brand {
+    display: flex;
+    align-items: center;
+    gap: var(--hebil-space-3);
+    color: #fff;
+    font-weight: var(--hebil-font-weight-bold);
+    font-size: var(--hebil-font-size-lg);
+}
+
+.pdv-header__logo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--hebil-radius-sm);
+    background: var(--hebil-color-primary);
+    color: #fff;
+    font-weight: var(--hebil-font-weight-strong);
+}
+
+.pdv-header__meta {
+    display: flex;
+    align-items: center;
+    gap: var(--hebil-space-5);
+    font-size: var(--hebil-font-size-sm);
+    color: var(--hebil-pdv-header-text);
+}
+
+.pdv-header__meta-item {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.pdv-header__meta-item span {
+    color: #94a3b8;
+    font-size: var(--hebil-font-size-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.pdv-header__meta-item strong {
+    color: #fff;
+    font-weight: var(--hebil-font-weight-semibold);
+}
+
+.pdv-header__shortcuts {
+    display: flex;
+    align-items: center;
+    gap: var(--hebil-space-3);
+    font-size: var(--hebil-font-size-xs);
+    color: #94a3b8;
+}
+
+.pdv-header__shortcut {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--hebil-space-1);
+}
+
+.pdv-header__kbd {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 22px;
+    padding: 0 var(--hebil-space-1);
+    height: 22px;
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: var(--hebil-radius-sm);
+    color: #e2e8f0;
+    font-family: var(--hebil-font-family-mono);
+    font-size: 0.6875rem;
+    font-weight: var(--hebil-font-weight-semibold);
+}
+
+.pdv-header__exit {
+    color: #cbd5e1;
+    background: transparent;
+    border: 1px solid #334155;
+    padding: var(--hebil-space-2) var(--hebil-space-3);
+    border-radius: var(--hebil-radius-sm);
+    font-size: var(--hebil-font-size-sm);
+    font-weight: var(--hebil-font-weight-medium);
+    text-decoration: none;
+}
+
+.pdv-header__exit:hover {
+    background: #1e293b;
+    color: #fff;
+    text-decoration: none;
+}
+
+/* Conteúdo --------------------------------------------------------------- */
 .layout-pdv .pdv-content {
     flex: 1;
-    padding: var(--hebil-spacing);
+    padding: var(--hebil-space-5);
+}
+
+@media (max-width: 767.98px) {
+    .pdv-header {
+        flex-wrap: wrap;
+        padding: var(--hebil-space-3) var(--hebil-space-4);
+    }
+
+    .pdv-header__shortcuts {
+        display: none;
+    }
 }

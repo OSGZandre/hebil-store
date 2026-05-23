@@ -1,0 +1,74 @@
+{% extends 'layouts/admin.html.twig' %}
+
+{% block title %}Abrir caixa — Hebil Store{% endblock %}
+
+{% block admin_breadcrumb %}
+    <p class="admin-page-header__breadcrumb">Operação · Caixa · Abrir</p>
+{% endblock %}
+
+{% block admin_title %}Abrir caixa{% endblock %}
+
+{% block admin_subtitle %}
+    <p class="admin-page-header__subtitle">Informe o fundo de troco (valor em dinheiro) presente no caixa antes da primeira venda.</p>
+{% endblock %}
+
+{% block admin_body %}
+    <div class="caixa-abrir">
+        <form class="caixa-abrir__card" novalidate>
+
+            <header class="caixa-abrir__header">
+                <h2 class="caixa-abrir__title">Abertura de sessão</h2>
+                <p class="caixa-abrir__subtitle">A sessão fica vinculada ao operador logado e ao caixa selecionado.</p>
+            </header>
+
+            <div class="caixa-abrir__body">
+                <div class="mb-3">
+                    <label for="caixaSelect" class="form-label">
+                        Caixa <span class="form-required" aria-hidden="true">*</span>
+                    </label>
+                    <select id="caixaSelect" name="caixa_id" class="form-select" required>
+                        <option value="">Selecione…</option>
+                        <option value="1" selected>Caixa 01 — Frente da loja</option>
+                        <option value="2">Caixa 02 — Provador</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Operador</label>
+                    <input type="text" class="form-control" value="{{ navbar_usuario|default('Funcionário Mock') }}" readonly>
+                    <p class="form-text">Usuário em sessão. A troca exige login na Fase 10.</p>
+                </div>
+
+                <div class="mb-3 caixa-abrir__currency">
+                    <label for="caixaAbertura" class="form-label">
+                        Fundo de troco (R$) <span class="form-required" aria-hidden="true">*</span>
+                    </label>
+                    <div class="input-group">
+                        <span class="input-group-text">R$</span>
+                        <input
+                            type="text"
+                            id="caixaAbertura"
+                            name="valor_abertura"
+                            class="form-control"
+                            inputmode="decimal"
+                            placeholder="0,00"
+                            required
+                            autofocus
+                        >
+                    </div>
+                    <p class="form-text">Confira fisicamente as cédulas e moedas antes de confirmar.</p>
+                </div>
+
+                <div class="mb-0">
+                    <label for="caixaObservacao" class="form-label">Observação (opcional)</label>
+                    <textarea id="caixaObservacao" name="observacao" class="form-control" rows="2" placeholder="Ex.: faltou troco de R$ 2,00 em moedas."></textarea>
+                </div>
+            </div>
+
+            <footer class="caixa-abrir__footer">
+                <a href="{{ path('home') }}" class="btn btn-link text-body-secondary text-decoration-none">Cancelar</a>
+                <button type="submit" class="btn btn-primary">Confirmar abertura</button>
+            </footer>
+        </form>
+    </div>
+{% endblock %}

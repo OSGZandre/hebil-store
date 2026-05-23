@@ -1,9 +1,23 @@
-<header class="app-navbar">
+<header class="app-navbar" role="banner">
     <div class="app-navbar__brand">
-        <a href="{{ path('home') }}">Hebil Store</a>
+        <a href="{{ path('home') }}">
+            <span class="app-navbar__logo" aria-hidden="true">H</span>
+            <span>Hebil Store</span>
+        </a>
     </div>
+
     <nav class="app-navbar__nav" aria-label="Menu principal">
-        {# Rotas serão ligadas conforme cada módulo for implementado #}
-        <a href="{{ path('home') }}" class="app-navbar__link">Início</a>
+        {% set current = app.request.attributes.get('_route') %}
+        <a href="{{ path('home') }}" class="app-navbar__link"{% if current == 'home' %} aria-current="page"{% endif %}>Início</a>
+        <a href="{{ path('venda_index') }}" class="app-navbar__link"{% if current starts with 'venda_' %} aria-current="page"{% endif %}>PDV</a>
+        <a href="{{ path('produto_index') }}" class="app-navbar__link"{% if current starts with 'produto_' %} aria-current="page"{% endif %}>Produtos</a>
+        <a href="{{ path('dashboard_index') }}" class="app-navbar__link"{% if current starts with 'dashboard_' %} aria-current="page"{% endif %}>Administração</a>
     </nav>
+
+    <div class="app-navbar__user" aria-label="Usuário atual">
+        <div>
+            <strong>{{ navbar_usuario|default('Funcionário Mock') }}</strong>
+            <div>{{ navbar_perfil|default('Funcionário') }} · {{ navbar_loja|default('Loja Matriz') }}</div>
+        </div>
+    </div>
 </header>

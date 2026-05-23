@@ -2,12 +2,46 @@
 
 {% block body_class %}layout-pdv{% endblock %}
 
+{# PDV ocupa a tela inteira; navbar pública é suprimida #}
 {% block navbar %}{% endblock %}
 
 {% block body %}
     <div class="pdv-shell">
-        {% block pdv_header %}{% endblock %}
+        {% block pdv_header %}
+            <header class="pdv-header" role="banner">
+                <div class="pdv-header__brand">
+                    <span class="pdv-header__logo" aria-hidden="true">H</span>
+                    <span>Hebil Store · PDV</span>
+                </div>
+
+                <div class="pdv-header__meta">
+                    {% block pdv_header_meta %}
+                        <div class="pdv-header__meta-item">
+                            <span>Operador</span>
+                            <strong>{{ pdv_operador|default('Funcionário') }}</strong>
+                        </div>
+                        <div class="pdv-header__meta-item">
+                            <span>Caixa</span>
+                            <strong>{{ pdv_caixa|default('Caixa 01') }}</strong>
+                        </div>
+                        <div class="pdv-header__meta-item">
+                            <span>Sessão aberta</span>
+                            <strong>{{ pdv_sessao_abertura|default('08:14') }}</strong>
+                        </div>
+                    {% endblock %}
+                </div>
+
+                <div class="pdv-header__shortcuts" aria-label="Atalhos de teclado">
+                    <span class="pdv-header__shortcut"><span class="pdv-header__kbd">F2</span> Buscar</span>
+                    <span class="pdv-header__shortcut"><span class="pdv-header__kbd">F4</span> Pagamento</span>
+                    <span class="pdv-header__shortcut"><span class="pdv-header__kbd">F8</span> Finalizar</span>
+                    <a href="{{ path('home') }}" class="pdv-header__exit">Sair do PDV</a>
+                </div>
+            </header>
+        {% endblock %}
+
         <div class="pdv-content">
+            {% include 'partials/flash-messages.html.twig' %}
             {% block pdv_body %}{% endblock %}
         </div>
     </div>

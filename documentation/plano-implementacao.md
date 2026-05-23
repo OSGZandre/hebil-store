@@ -96,13 +96,13 @@ Fase 0 → 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 → 9 → 10 → 11 → 1
 
 ### Fase 0 — Fundação técnica
 
-**Status:** Pendente
+**Status:** Concluído
 
 **Objetivo:** Base para módulos + SQL direto + layout, **sem** login.
 
 | Entregável | Descrição |
 |------------|-----------|
-| `Shared/Database/` | `ConnectionFactory`, `AbstractRepository`, `TransactionManager` |
+| `Shared/Database/` | `ConnectionFactory`, `TransactionManager` |
 | `Shared/Context/UsuarioContext` | Mock `idUsuario` / `idLoja` (dev) |
 | `src/Module/*` | Estrutura de pastas |
 | Layout Twig + Bootstrap | `base.html.twig`, menu para módulos |
@@ -111,10 +111,10 @@ Fase 0 → 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 → 9 → 10 → 11 → 1
 
 **Critério de pronto:**
 
-- [ ] PDO conecta em `loja_system`
-- [ ] Repository de teste: `SELECT 1`
-- [ ] `UsuarioContext` retorna ids do seed
-- [ ] Layout base abre sem erro
+- [x] PDO conecta em `loja_system`
+- [x] Repository de teste: `SELECT 1`
+- [x] `UsuarioContext` retorna ids do seed
+- [x] Layout base abre sem erro
 
 **Estimativa:** 1–2 dias
 
@@ -352,7 +352,7 @@ Fase 0 → 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 → 9 → 10 → 11 → 1
 ## 7. Checklist de desenvolvimento
 
 ```text
-[ ] Fase 0  — Fundação + UsuarioContext mock
+[x] Fase 0  — Fundação + UsuarioContext mock
 [ ] Fase 1  — Produtos e categorias
 [ ] Fase 2  — Estoque básico
 [ ] Fase 3  — Caixa essencial
