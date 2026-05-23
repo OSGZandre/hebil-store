@@ -3,7 +3,9 @@
 Documento de referência para o **Sistema de Gestão para Loja / PDV**. Complementa o levantamento de requisitos em [`requisitos-pt1.md`](requisitos-pt1.md).
 
 **Status:** planejamento  
-**Última atualização:** maio/2026
+**Última atualização:** maio/2026  
+
+**Documento relacionado:** estrutura de módulos e SQL nos repositories → [`arquitetura.md`](arquitetura.md)
 
 ---
 
@@ -37,8 +39,9 @@ A arquitetura prioriza:
 | Linguagem | PHP | ≥ 8.2 |
 | Framework | Symfony | 7.4.x |
 | Templates | Twig | 3.x |
-| ORM / persistência | Doctrine ORM + DBAL | 3.x |
-| Migrações de schema | Doctrine Migrations Bundle | 4.x |
+| Persistência | **SQL direto** nos repositories (PDO) | — |
+| ORM | **Não utilizado** (sem Doctrine ORM) | — |
+| Migrações de schema | Arquivos `.sql` em `database/migrations/` | — |
 | Banco de dados | MySQL | 8.x (utf8mb4, InnoDB) |
 | CSS / UI | Bootstrap | 5.x |
 | JavaScript | ES modules via Asset Mapper + Stimulus + Turbo | 3.x / 8.x |
@@ -49,48 +52,71 @@ A arquitetura prioriza:
 
 ## 3. Arquitetura da aplicação
 
+Detalhamento completo (módulos, exemplos de repository, comunicação entre módulos): **[`arquitetura.md`](arquitetura.md)**.
+
 ### 3.1 Padrão geral
 
 ```
 Navegador (Bootstrap + JS/Stimulus)
         │
         ▼
-Controller (HTTP / rotas)
+Controller (por módulo: Venda, Caixa, …)
         │
         ▼
-Application Service (regras de negócio, transações)
+Service (regras de negócio, transações)
         │
-        ├── Entity / Domain (Doctrine)
-        ├── Repository (consultas)
-        └── AuditLog / eventos
-        │
-        ▼
-Twig (resposta HTML)  ou  JSON (AJAX do PDV)
+        ├── Repository (SQL explícito + parâmetros)
+        ├── Services de outros módulos (Estoque, Auditoria, …)
+        └── Shared (TransactionManager, AbstractRepository)
         │
         ▼
-MySQL
+Twig (HTML)  ou  JSON (AJAX do PDV)
+        │
+        ▼
+MySQL (PDO)
 ```
 
 **Princípios:**
 
 - Controllers finos: recebem request, delegam ao service, retornam resposta.
-- Regras de negócio nos **services**, não no Twig nem no controller.
-- Operações que alteram venda, estoque ou caixa rodam dentro de **transação de banco**.
-- **Auditoria de negócio** em tabela dedicada (`audit_log`), independente dos logs técnicos do Monolog.
+- Regras de negócio nos **services**, não no Twig, controller nem repository.
+- **SQL apenas nos repositories** — sempre com parâmetros nomeados (`:id`, `:codigo`).
+- Operações que alteram venda, estoque e caixa rodam em **uma transação** (`TransactionManager`).
+- **Auditoria de negócio** via módulo `Auditoria` + tabela `audit_log` (não só Monolog).
 
-### 3.2 Organização sugerida de pastas (`src/`)
+### 3.2 Organização por módulos (`src/`)
 
-| Pasta / namespace | Responsabilidade |
-|-------------------|------------------|
-| `Controller/` | Rotas HTTP, autorização por atributo ou `access_control` |
-| `Entity/` | Mapeamento Doctrine (entidades) |
-| `Repository/` | Queries reutilizáveis |
-| `Service/` | Casos de uso: venda, caixa, estoque, autorização admin |
-| `Security/` | Voters, listeners de login, providers |
-| `Form/` | Form types Symfony |
-| `EventSubscriber/` | Hooks transversais (auditoria, etc.) |
-| `Enum/` | Status de venda, tipo de movimento, roles auxiliares |
-| `Dto/` | Objetos de entrada/saída para AJAX e relatórios |
+```
+src/
+├── Kernel.php
+├── Shared/          # Database, transações, exceções, helpers técnicos
+└── Module/
+     ├── Auth/
+     ├── Usuario/
+     ├── Produto/
+     ├── Estoque/
+     ├── Venda/
+     ├── Caixa/
+     ├── Relatorio/
+     ├── Dashboard/
+     └── Auditoria/
+```
+
+Cada módulo contém, no mínimo: `Controller/`, `Service/`, `Repository/` (e `Dto/`, `Form/` quando fizer sentido).
+
+| Módulo | Foco |
+|--------|------|
+| Auth | Login, logout, sessão |
+| Usuario | CRUD e perfis (admin) |
+| Produto | Catálogo, barcode, preços |
+| Estoque | Movimentações e saldo |
+| Venda | PDV e ciclo da venda |
+| Caixa | Sessão, sangria, suprimento |
+| Relatorio | Listagens e exportações |
+| Dashboard | KPIs e gráficos (somente leitura) |
+| Auditoria | Logs e autorização admin |
+
+**Sugestões adotadas na doc de arquitetura:** manter Auth + Usuario separados; Relatorio concentra SQL pesado e Dashboard reutiliza; Venda orquestra Estoque/Caixa/Auditoria via services (não SQL cruzado entre repos).
 
 ### 3.3 Camadas de interface (Twig)
 
@@ -114,8 +140,6 @@ Separação visual e de rotas entre **PDV** (`/pdv/*`) e **administração** (`/
 | `symfony/twig-bundle` | Templates, layouts, partials |
 | `symfony/security-bundle` | Login, roles, firewalls, hash de senha |
 | `symfony/form` + `symfony/validator` | Cadastros, motivo obrigatório em operações sensíveis |
-| `doctrine/orm` + `doctrine/doctrine-bundle` | Entidades, transações, consultas |
-| `doctrine/doctrine-migrations-bundle` | Versionamento do schema MySQL |
 | `symfony/messenger` | Tarefas assíncronas (relatórios pesados, agregações futuras) |
 | `symfony/monolog-bundle` | Logs técnicos (erros, debug) — **não substitui** auditoria de negócio |
 | `symfony/asset-mapper` | CSS/JS sem Webpack no MVP |
@@ -123,7 +147,18 @@ Separação visual e de rotas entre **PDV** (`/pdv/*`) e **administração** (`/
 | `symfony/mailer` | Recuperação de senha, notificações (fase posterior) |
 | `phpunit/phpunit` | Testes automatizados de regras críticas |
 
-### 4.2 Pacotes opcionais (documentar, adotar quando necessário)
+### 4.2 Persistência — sem ORM (decisão do projeto)
+
+| Usar | Não usar |
+|------|----------|
+| SQL escrito nos `*Repository` | Doctrine ORM, entidades mapeadas, DQL |
+| PDO (via wrapper em `Shared/Database`) | `EntityManager`, repositories gerados pelo ORM |
+| DTOs / arrays como retorno | Lazy loading, cascades do ORM |
+| `database/migrations/*.sql` | Doctrine Migrations (remover do projeto ao implementar) |
+
+O scaffold Symfony atual ainda lista Doctrine no `composer.json` — será **removido** na implementação. Conexão MySQL via **PDO**; opcionalmente manter apenas `doctrine/dbal` como factory de conexão (sem ORM), ou PDO puro configurado em `services.yaml`.
+
+### 4.3 Pacotes opcionais (documentar, adotar quando necessário)
 
 | Pacote / recurso | Quando adotar |
 |------------------|---------------|
@@ -133,12 +168,33 @@ Separação visual e de rotas entre **PDV** (`/pdv/*`) e **administração** (`/
 | Redis (sessão/cache) | Múltiplos terminais, impedir login simultâneo, cache de dashboard |
 | API Platform | Integração externa ou app mobile — não no MVP |
 
-### 4.3 Convenções PHP
+### 4.4 Convenções PHP
 
-- **Atributos** para mapeamento Doctrine e rotas (`#[Route]`, `#[Entity]`).
-- **Enums** PHP 8.1+ para status (`SaleStatus`, `CashSessionStatus`, etc.).
+- **Atributos** para rotas (`#[Route]`) e, se útil, injeção em services.
+- **Enums** PHP 8.1+ para status (`VendaStatus`, `SessaoCaixaStatus`, etc.).
 - **Tipagem estrita** nos services e DTOs.
 - **Injeção de dependência** via construtor (autowire Symfony).
+- **Repositories finais** (`final class`) por agregado/tabela principal.
+
+### 4.5 Acesso ao banco (sem ORM)
+
+Wrapper sugerido em `Shared/Database/AbstractRepository`:
+
+| Método | Uso |
+|--------|-----|
+| `fetchAll($sql, $params)` | Listagens |
+| `fetchOne($sql, $params)` | Um registro ou `null` |
+| `execute($sql, $params)` | INSERT/UPDATE/DELETE |
+| `lastInsertId()` | Após insert |
+
+Implementação interna: `PDO::prepare()` + `execute()` + `fetchAll(PDO::FETCH_ASSOC)`.
+
+Exemplo de uso no módulo (ver código completo em [`arquitetura.md`](arquitetura.md#42-exemplo-de-repository)):
+
+```php
+$sql = 'SELECT id, nome, preco_venda FROM produto WHERE codigo_barras = :codigo LIMIT 1';
+return $this->fetchOne($sql, ['codigo' => $codigo]);
+```
 
 ---
 
@@ -207,8 +263,9 @@ AdminAuthorization (ação crítica autorizada por admin)
 
 ### 5.5 Migrações
 
-- Toda alteração de schema via **Doctrine Migrations** (`php bin/console make:migration`, `migrate`).
-- Nunca alterar produção manualmente sem migration correspondente.
+- Scripts SQL versionados em `database/migrations/` (ex.: `V001__criar_usuario.sql`, `V002__criar_produto.sql`).
+- Controle de versão aplicada: tabela `schema_version` ou ferramenta/cli própria.
+- Nunca alterar produção sem script SQL correspondente commitado no repositório.
 
 ---
 
@@ -310,31 +367,39 @@ Conforme requisitos não funcionais:
 ### 7.5 Dashboards e gráficos
 
 - Biblioteca sugerida: **Chart.js** (via importmap ou asset local).
-- Dados carregados pelo controller (agregações SQL); JSON opcional para gráficos dinâmicos.
-- Cache de consultas pesadas em produção (`doctrine.result_cache` já configurado para `prod`).
+- Dados carregados pelo controller via repositories (agregações SQL); JSON opcional para gráficos dinâmicos.
+- Cache de consultas pesadas em produção: Symfony Cache ou materialized summaries (fase 2).
 
 ---
 
 ## 8. Módulos × tecnologia
 
-Mapeamento dos requisitos funcionais para componentes da stack.
+Mapeamento dos requisitos para módulos em `src/Module/` (detalhes em [`arquitetura.md`](arquitetura.md)).
 
-| Módulo (requisitos) | Backend | Frontend | Persistência |
-|---------------------|---------|----------|--------------|
-| Autenticação e usuários | SecurityBundle, Form, User entity | Twig login, Bootstrap forms | `user`, migrations |
-| PDV / vendas | SaleService, transações, AJAX controllers | `pdv` layout, Stimulus, Turbo parcial | `sale`, `sale_item`, `payment` |
-| Estoque | StockService, validação | Forms + listagens | `product`, `stock_movement` |
-| Caixa | CashSessionService | Fluxo abertura/fechamento | `cash_register`, `cash_session`, `cash_movement` |
-| Dashboards admin | Queries agregadas, cache | Chart.js, admin layout | Views / tabelas resumo (fase 2) |
-| Relatórios | QueryBuilder, export CSV (PDF fase 2) | Filtros em Form, tabelas Twig | Leitura apenas, índices por período |
-| Logs e auditoria | AuditSubscriber / AuditService | Tela admin de consulta | `audit_log`, `admin_authorization` |
-| Autorização admin | AdminAuthService + Security | Modal Stimulus | `admin_authorization` |
+| Requisito | Módulo Symfony | Repository / tabelas principais |
+|-----------|----------------|----------------------------------|
+| Login / sessão | `Auth` | `usuario` (leitura para autenticação) |
+| Cadastro de usuários | `Usuario` | `usuario` |
+| Produtos / barcode | `Produto` | `produto` |
+| Estoque / ajustes | `Estoque` | `estoque_movimento`, saldo em `produto` |
+| PDV / vendas | `Venda` | `venda`, `venda_item`, `pagamento` |
+| Caixa | `Caixa` | `caixa`, `sessao_caixa`, `movimento_caixa` |
+| Dashboards | `Dashboard` | SQL de leitura (via `Relatorio` ou repos próprios) |
+| Relatórios | `Relatorio` | Consultas filtradas, export CSV |
+| Auditoria / admin auth | `Auditoria` | `audit_log`, `admin_authorization` |
+
+| Camada transversal | Onde |
+|--------------------|------|
+| Transações | `Shared/Database/TransactionManager` |
+| SQL base | `Shared/Database/AbstractRepository` |
+| Templates | `templates/module/<nome>/` |
+| Front PDV | Bootstrap + Stimulus em `assets/` |
 
 ---
 
 ## 9. Mensageria e tarefas em background
 
-**Symfony Messenger** já configurado com transporte `doctrine://` (fila em tabela MySQL).
+**Symfony Messenger** pode usar transporte em tabela MySQL (`doctrine://` no scaffold) ou `sync://` no MVP — revisar ao remover Doctrine ORM.
 
 | Uso | Prioridade |
 |-----|------------|
@@ -352,9 +417,9 @@ No MVP, fluxo síncrono é aceitável para PDV e operações de caixa; mensageri
 |------|------------|------|
 | Unitário | PHPUnit | Services: cálculo de totais, regras de desconto, estoque |
 | Funcional | Symfony BrowserKit | Login, rotas protegidas, fluxo de venda feliz |
-| Integração | PHPUnit + banco de teste | Transação venda + estoque + audit_log |
+| Integração | PHPUnit + MySQL de teste (ou SQLite em memória) | Transação venda + estoque + audit_log |
 
-Banco de testes: sufixo `_test` via configuração Doctrine em ambiente `test`.
+Banco de testes: base separada (`hebil_store_test`), migrations SQL aplicadas no setup do CI.
 
 Cenários **obrigatórios** antes de produção (amostra):
 
@@ -411,8 +476,7 @@ Requisitos não funcionais incluem backups e recuperação. Responsabilidades di
 ### 12.4 Performance (PDV)
 
 - Índices em colunas de busca e filtro por data.
-- Evitar N+1 nas listagens (`JOIN` ou `fetch: EAGER` pontual).
-- Cache de resultado Doctrine em `prod` para dashboards.
+- Evitar N+1: preferir `JOIN` na query em vez de loop com várias queries no PHP.
 - OPcache habilitado em PHP produção.
 
 ---
@@ -421,7 +485,7 @@ Requisitos não funcionais incluem backups e recuperação. Responsabilidades di
 
 | Item | Preparação no MVP |
 |------|-------------------|
-| Multi-loja | `store_id` nas entidades |
+| Multi-loja | `loja_id` nas tabelas operacionais |
 | Offline / PWA | — |
 | App mobile | — |
 | API REST pública | — |
@@ -434,10 +498,11 @@ Requisitos não funcionais incluem backups e recuperação. Responsabilidades di
 ## 14. Referências
 
 - [Documentação Symfony 7.4](https://symfony.com/doc/7.4/index.html)
-- [Doctrine ORM](https://www.doctrine-project.org/projects/orm.html)
+- [PDO PHP](https://www.php.net/manual/en/book.pdo.php)
 - [Bootstrap 5](https://getbootstrap.com/docs/5.3/getting-started/introduction/)
-- Requisitos do projeto: [`requisitos-pt1.md`](requisitos-pt1.md)
-- Dependências atuais: [`composer.json`](../composer.json)
+- Requisitos: [`requisitos-pt1.md`](requisitos-pt1.md)
+- Arquitetura modular e SQL: [`arquitetura.md`](arquitetura.md)
+- Dependências atuais: [`composer.json`](../composer.json) *(Doctrine ORM será removido na implementação)*
 
 ---
 
@@ -445,7 +510,8 @@ Requisitos não funcionais incluem backups e recuperação. Responsabilidades di
 
 | Documento | Conteúdo |
 |-----------|----------|
-| `modelo-dados.md` | ER detalhado, campos, índices, enums de status |
+| [`arquitetura.md`](arquitetura.md) | Módulos, camadas, SQL nos repos, comunicação entre módulos |
+| [`modelo-dados.md`](modelo-dados.md) | Tabelas, enums, FKs, DDL MVP (`V001`) e fase 2 (`V002`) |
 | `matriz-permissoes.md` | Ação × perfil × exige autorização admin |
 | `fluxos-operacionais.md` | Abertura de caixa → venda → fechamento; cancelamento |
 | `ux-pdv.md` | Atalhos de teclado, wireframes, estados da tela |
