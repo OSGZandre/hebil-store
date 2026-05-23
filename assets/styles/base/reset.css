@@ -1,0 +1,15 @@
+/**
+ * Base / reset leve — Bootstrap cuidará da maior parte depois da importação.
+ */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: var(--hebil-font-family);
+    color: var(--hebil-color-text);
+    background-color: var(--hebil-color-body-bg);
+}

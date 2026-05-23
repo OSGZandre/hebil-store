@@ -1,3 +1,13 @@
-body {
-    background-color: skyblue;
-}
+/**
+ * Entrada principal de estilos — Hebil Store
+ * Ordem: tokens → base → vendor (Bootstrap) → layouts → components → pages
+ */
+
+@import url('./variables/tokens.css');
+@import url('./base/reset.css');
+
+@import url('./layouts/app-shell.css');
+@import url('./layouts/admin.css');
+@import url('./layouts/pdv.css');
+@import url('./components/alerts.css');
+@import url('./pages/home.css');

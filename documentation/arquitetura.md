@@ -41,7 +41,9 @@ Cada módulo segue o **mesmo padrão interno** (ver seção 3).
 
 Templates Twig ficam em `templates/module/<nome>/` (convenção Symfony), espelhando o módulo.
 
-Migrations SQL em `database/migrations/` (arquivos `.sql` versionados, sem Doctrine ORM).
+CSS personalizado em `assets/styles/` — ver [`estrutura-pastas.md`](estrutura-pastas.md) (convenção de nomes: sem `_` no início; `ProdutoController`, `pages/produto-listar.css`, etc.).
+
+Migrations SQL em `database/scripts/` (arquivos `.sql` versionados, sem Doctrine ORM).
 
 ---
 

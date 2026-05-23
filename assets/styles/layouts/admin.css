@@ -1,0 +1,15 @@
+.layout-admin .admin-shell {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    min-height: calc(100vh - 56px);
+}
+
+.layout-admin .admin-sidebar {
+    background: var(--hebil-color-surface);
+    border-right: 1px solid #dee2e6;
+    padding: var(--hebil-spacing);
+}
+
+.layout-admin .admin-content {
+    padding: var(--hebil-spacing);
+}

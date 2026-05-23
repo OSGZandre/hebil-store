@@ -1,0 +1,30 @@
+.app-main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--hebil-spacing);
+}
+
+.app-navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem var(--hebil-spacing);
+    background: var(--hebil-color-surface);
+    border-bottom: 1px solid #dee2e6;
+}
+
+.app-navbar__brand a {
+    font-weight: 700;
+    color: var(--hebil-color-text);
+    text-decoration: none;
+}
+
+.app-navbar__nav {
+    display: flex;
+    gap: 1rem;
+}
+
+.app-navbar__link {
+    color: var(--hebil-color-primary);
+    text-decoration: none;
+}

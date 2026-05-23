@@ -1,0 +1,14 @@
+{% extends 'layouts/base.html.twig' %}
+
+{% block body_class %}layout-pdv{% endblock %}
+
+{% block navbar %}{% endblock %}
+
+{% block body %}
+    <div class="pdv-shell">
+        {% block pdv_header %}{% endblock %}
+        <div class="pdv-content">
+            {% block pdv_body %}{% endblock %}
+        </div>
+    </div>
+{% endblock %}

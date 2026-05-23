@@ -1,0 +1,22 @@
+{% extends 'layouts/base.html.twig' %}
+
+{% block body_class %}layout-admin{% endblock %}
+
+{% block body %}
+    <div class="admin-shell">
+        <aside class="admin-sidebar">
+            {% block admin_sidebar %}
+                <nav class="admin-nav">
+                    <span class="admin-nav__title">Administração</span>
+                    {# Links dos módulos serão adicionados nas fases seguintes #}
+                </nav>
+            {% endblock %}
+        </aside>
+        <div class="admin-content">
+            {% block admin_header %}{% endblock %}
+            <div class="admin-page">
+                {% block admin_body %}{% endblock %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

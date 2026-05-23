@@ -512,6 +512,7 @@ Requisitos não funcionais incluem backups e recuperação. Responsabilidades di
 |-----------|----------|
 | [`arquitetura.md`](arquitetura.md) | Módulos, camadas, SQL nos repos, comunicação entre módulos |
 | [`modelo-dados.md`](modelo-dados.md) | Tabelas, enums, FKs, DDL MVP (`V001`) e fase 2 (`V002`) |
+| [`plano-implementacao.md`](plano-implementacao.md) | Fases 0–12, ordem de entrega, critérios de pronto |
 | `matriz-permissoes.md` | Ação × perfil × exige autorização admin |
 | `fluxos-operacionais.md` | Abertura de caixa → venda → fechamento; cancelamento |
 | `ux-pdv.md` | Atalhos de teclado, wireframes, estados da tela |
